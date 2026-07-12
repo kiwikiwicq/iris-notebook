@@ -73,7 +73,7 @@
 				<button
 					class="category-card"
 					onclick={() => handleCategoryClick(category.slug)}
-					style="--delay: {i * 60}ms; --cat-color: {category.color}; --cat-container: {category.colorContainer}"
+					style="--delay: {i * 60}ms; --cat-color: {category.color};"
 					aria-label="Browse {category.name} articles"
 				>
 					<div class="cat-icon-wrap">
@@ -247,7 +247,7 @@
 	}
 
 	.category-card:hover {
-		background: var(--cat-container, var(--md-sys-color-surface-container));
+		background: color-mix(in srgb, var(--cat-color, #6750A4) 8%, transparent);
 		border-color: var(--cat-color, var(--md-sys-color-primary));
 		transform: translateY(-4px);
 		box-shadow: 0 8px 24px color-mix(in srgb, var(--cat-color, #6750A4) 15%, transparent);
@@ -260,7 +260,7 @@
 		width: 48px;
 		height: 48px;
 		border-radius: var(--md-sys-shape-corner-large);
-		background: var(--cat-container, var(--md-sys-color-primary-container));
+		background: color-mix(in srgb, var(--cat-color, #6750A4) 15%, transparent);
 		color: var(--cat-color, var(--md-sys-color-primary));
 		flex-shrink: 0;
 		transition: background var(--motion-duration-short4) var(--motion-easing-standard);

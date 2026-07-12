@@ -41,7 +41,7 @@
 					onclick={() => {
 						activeCategory = activeCategory === category.slug ? null : category.slug;
 					}}
-					style="--delay: {i * 60}ms; --cat-color: {category.color}; --cat-bg: {category.colorContainer}"
+					style="--delay: {i * 60}ms; --cat-color: {category.color};"
 					aria-expanded={activeCategory === category.slug}
 					aria-controls="category-posts-{category.slug}"
 				>
@@ -69,7 +69,7 @@
 				aria-label="{activeCat?.name} articles"
 			>
 				<div class="category-posts-header">
-					<div class="cat-badge" style="--cat-color: {activeCat?.color}; --cat-bg: {activeCat?.colorContainer}">
+					<div class="cat-badge" style="--cat-color: {activeCat?.color};">
 						<span class="material-symbols-rounded icon-filled">{activeCat?.icon}</span>
 						<h2 class="title-large">{activeCat?.name}</h2>
 					</div>
@@ -135,23 +135,23 @@
 
 	.cat-card:hover {
 		border-color: var(--cat-color);
-		background: var(--cat-bg, var(--md-sys-color-surface-container));
+		background: color-mix(in srgb, var(--cat-color) 8%, transparent);
 		transform: translateY(-4px);
-		box-shadow: 0 8px 24px color-mix(in srgb, var(--cat-color, #6750A4) 15%, transparent);
+		box-shadow: 0 8px 24px color-mix(in srgb, var(--cat-color) 15%, transparent);
 	}
 
 	.cat-card.active {
 		border-color: var(--cat-color);
-		background: var(--cat-bg);
-		box-shadow: 0 4px 16px color-mix(in srgb, var(--cat-color, #6750A4) 20%, transparent);
+		background: color-mix(in srgb, var(--cat-color) 12%, transparent);
+		box-shadow: 0 4px 16px color-mix(in srgb, var(--cat-color) 20%, transparent);
 	}
 
 	.cat-card-icon {
 		width: 56px;
 		height: 56px;
 		border-radius: var(--md-sys-shape-corner-extra-large);
-		background: var(--cat-bg, var(--md-sys-color-primary-container));
-		color: var(--cat-color, var(--md-sys-color-primary));
+		background: color-mix(in srgb, var(--cat-color) 15%, transparent);
+		color: var(--cat-color);
 		display: flex;
 		align-items: center;
 		justify-content: center;
