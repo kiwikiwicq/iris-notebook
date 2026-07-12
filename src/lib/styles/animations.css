@@ -1,0 +1,147 @@
+/* ============================================================
+ * Material Motion – Animations & Transitions
+ * ============================================================ */
+
+/* ── Keyframes ── */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes scale-in {
+  from { transform: scale(0.92); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+@keyframes scale-out {
+  from { transform: scale(1); opacity: 1; }
+  to   { transform: scale(0.92); opacity: 0; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-down {
+  from { transform: translateY(-16px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-left {
+  from { transform: translateX(24px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-right {
+  from { transform: translateX(-24px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes ripple {
+  from {
+    transform: scale(0);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(103, 80, 164, 0.2); }
+  50%       { box-shadow: 0 0 0 12px rgba(103, 80, 164, 0); }
+}
+
+@keyframes progress-indeterminate {
+  0%   { transform: translateX(-100%) scaleX(0.5); }
+  50%  { transform: translateX(0%) scaleX(0.75); }
+  100% { transform: translateX(100%) scaleX(0.5); }
+}
+
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── Animation Utility Classes ── */
+
+.animate-fade-in {
+  animation: fade-in var(--motion-duration-medium2) var(--motion-easing-standard) both;
+}
+
+.animate-scale-in {
+  animation: scale-in var(--motion-duration-medium2) var(--motion-easing-emphasized-decelerate) both;
+}
+
+.animate-slide-up {
+  animation: slide-up var(--motion-duration-medium3) var(--motion-easing-emphasized-decelerate) both;
+}
+
+.animate-slide-down {
+  animation: slide-down var(--motion-duration-medium2) var(--motion-easing-emphasized-decelerate) both;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ── Stagger helper: add --delay custom prop on children ── */
+.stagger > * {
+  animation-delay: var(--delay, 0ms);
+}
+
+/* ── Card hover lift ── */
+.card-hover {
+  transition:
+    transform var(--motion-duration-medium1) var(--motion-easing-standard),
+    box-shadow var(--motion-duration-medium1) var(--motion-easing-standard);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* ── Page transitions ── */
+.page-enter {
+  animation: slide-up var(--motion-duration-medium3) var(--motion-easing-emphasized-decelerate) both;
+}
+
+/* ── Smooth transitions ── */
+.transition-colors {
+  transition: color var(--motion-duration-short4) var(--motion-easing-standard),
+              background-color var(--motion-duration-short4) var(--motion-easing-standard),
+              border-color var(--motion-duration-short4) var(--motion-easing-standard);
+}
+
+.transition-all {
+  transition: all var(--motion-duration-medium1) var(--motion-easing-standard);
+}
+
+/* ── Respect reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

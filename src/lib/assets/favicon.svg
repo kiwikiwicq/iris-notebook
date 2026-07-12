@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Iris flower icon -->
+  <!-- Upper petal -->
+  <path d="M16 2C16 2 12 7 12 11.5C12 13.98 13.79 16 16 16C18.21 16 20 13.98 20 11.5C20 7 16 2 16 2Z" fill="#6750A4" opacity="0.95"/>
+  <!-- Left petal -->
+  <path d="M16 16C16 16 9 12.5 5.5 16C3.75 17.75 4.25 21 6.5 22.25C8.75 23.5 12.5 21.75 16 19C19.5 21.75 23.25 23.5 25.5 22.25C27.75 21 28.25 17.75 26.5 16C23 12.5 16 16 16 16Z" fill="#6750A4"/>
+  <!-- Stem -->
+  <line x1="16" y1="16" x2="16" y2="28" stroke="#6750A4" stroke-width="2" stroke-linecap="round"/>
+  <!-- Small leaves -->
+  <path d="M16 22C16 22 13 21 12 23C13 23.5 14.5 23 16 22Z" fill="#625B71" opacity="0.7"/>
+  <path d="M16 22C16 22 19 21 20 23C19 23.5 17.5 23 16 22Z" fill="#625B71" opacity="0.7"/>
+</svg>
