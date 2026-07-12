@@ -344,6 +344,8 @@ img {
   font-size: 14px;
   line-height: 1.65;
   tab-size: 4;
+  border-radius: 0;
+  background-color: transparent !important;
 }
 
 .code-content code {
@@ -351,11 +353,14 @@ img {
 }
 
 /* Force Shiki to use its generated dark mode variables when app is in dark mode */
-html[data-theme='dark'] .shiki,
+html[data-theme='dark'] .shiki {
+  background-color: transparent !important;
+}
+
 html[data-theme='dark'] .shiki span {
   color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
   font-style: var(--shiki-dark-font-style) !important;
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
+  background-color: transparent !important;
 }
