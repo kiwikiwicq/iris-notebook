@@ -3,14 +3,56 @@
 	import { getPublishedPosts } from '$lib/data/posts';
 	import { formatDate } from '$lib/utils/format-date';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	// Load posts into search store
 	onMount(() => {
 		searchStore.setPosts(getPublishedPosts());
 	});
 
+	let selectedIndex = $state(-1);
+
+	// Reset selection when query changes
+	$effect(() => {
+		searchStore.query;
+		selectedIndex = -1;
+	});
+
 	function handleKeydown(e: KeyboardEvent) {
-		if (e.key === 'Escape') searchStore.close();
+		if (e.key === 'Escape') {
+			e.preventDefault();
+			searchStore.close();
+			return;
+		}
+
+		const resultsLength = searchStore.results.length;
+		if (resultsLength === 0) return;
+
+		if (e.key === 'ArrowDown') {
+			e.preventDefault();
+			selectedIndex = (selectedIndex + 1) % resultsLength;
+			scrollToSelected();
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault();
+			selectedIndex = selectedIndex - 1 < 0 ? resultsLength - 1 : selectedIndex - 1;
+			scrollToSelected();
+		} else if (e.key === 'Enter') {
+			e.preventDefault();
+			const idx = selectedIndex >= 0 ? selectedIndex : 0;
+			if (searchStore.results[idx]) {
+				goto(`/articles/${searchStore.results[idx].slug}`);
+				searchStore.close();
+			}
+		}
+	}
+
+	function scrollToSelected() {
+		setTimeout(() => {
+			const activeEl = document.querySelector('.result-item.active');
+			if (activeEl) {
+				activeEl.scrollIntoView({ block: 'nearest' });
+			}
+		}, 0);
 	}
 
 	function handleOverlayClick(e: MouseEvent) {
@@ -86,9 +128,10 @@
 								<a
 									href={`/articles/${post.slug}`}
 									class="result-item"
+									class:active={selectedIndex === i}
 									onclick={() => searchStore.close()}
 									role="option"
-									aria-selected="false"
+									aria-selected={selectedIndex === i}
 									style="--delay: {i * 40}ms"
 								>
 									<div class="result-main">

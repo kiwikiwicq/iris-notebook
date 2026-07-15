@@ -15,11 +15,30 @@
 	function handleCategoryClick(slug: string) {
 		goto(`/articles?category=${slug}`);
 	}
+
+	let emailValue = $state('');
+	let subscribeState = $state<'idle' | 'success' | 'error'>('idle');
+
+	function handleSubscribe(e: Event) {
+		e.preventDefault();
+		const trimmed = emailValue.trim();
+		if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+			subscribeState = 'error';
+			setTimeout(() => (subscribeState = 'idle'), 3000);
+			return;
+		}
+		// TODO: connect to your newsletter provider (e.g. Mailchimp, ConvertKit)
+		subscribeState = 'success';
+	}
 </script>
+
 
 <svelte:head>
 	<title>Iris Notebook – Programming, Android, Linux, AI</title>
 	<meta name="description" content="A premium personal knowledge base and blog covering programming, Android development, Linux, AI, and thoughtful developer notes." />
+	<meta property="og:title" content="Iris Notebook – Programming, Android, Linux, AI" />
+	<meta property="og:description" content="A premium personal knowledge base and blog covering programming, Android development, Linux, AI, and thoughtful developer notes." />
+	<meta property="og:type" content="website" />
 </svelte:head>
 
 <!-- Hero -->
@@ -130,18 +149,32 @@
 			<p class="body-large">
 				New articles on Android, Linux, AI, and programming craft. No spam, unsubscribe anytime.
 			</p>
-			<div class="cta-form">
-				<input
-					type="email"
-					placeholder="your@email.com"
-					class="cta-input"
-					aria-label="Email address for newsletter"
-				/>
-				<button class="cta-btn">
-					Subscribe
-					<span class="material-symbols-rounded">arrow_forward</span>
-				</button>
-			</div>
+
+			{#if subscribeState === 'success'}
+				<div class="subscribe-success" role="status">
+					<span class="material-symbols-rounded icon-filled">check_circle</span>
+					<span>You're subscribed! Thanks for joining.</span>
+				</div>
+			{:else}
+				<form class="cta-form" onsubmit={handleSubscribe} novalidate>
+					<input
+						type="email"
+						placeholder="your@email.com"
+						class="cta-input"
+						class:input-error={subscribeState === 'error'}
+						aria-label="Email address for newsletter"
+						bind:value={emailValue}
+						required
+					/>
+					<button class="cta-btn" type="submit">
+						Subscribe
+						<span class="material-symbols-rounded">arrow_forward</span>
+					</button>
+				</form>
+				{#if subscribeState === 'error'}
+					<p class="subscribe-error" role="alert">Please enter a valid email address.</p>
+				{/if}
+			{/if}
 		</div>
 	</div>
 </section>
@@ -398,5 +431,34 @@
 	.cta-btn:hover {
 		transform: translateY(-2px);
 		box-shadow: 0 6px 20px rgba(103, 80, 164, 0.4);
+	}
+
+	.input-error {
+		border-color: var(--md-sys-color-error) !important;
+	}
+
+	.subscribe-error {
+		font-size: 13px;
+		color: var(--md-sys-color-error);
+		margin-top: calc(var(--space-2) * -1);
+		max-width: none;
+	}
+
+	.subscribe-success {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
+		padding: var(--space-4) var(--space-5);
+		background: color-mix(in srgb, #3DDC84 15%, transparent);
+		border: 1.5px solid #3DDC84;
+		border-radius: var(--shape-button);
+		color: var(--md-sys-color-on-surface);
+		font-size: 15px;
+		font-weight: 500;
+	}
+
+	.subscribe-success .material-symbols-rounded {
+		color: #3DDC84;
+		font-size: 22px;
 	}
 </style>

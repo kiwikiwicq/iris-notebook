@@ -1,11 +1,18 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { getPublishedPosts } from '$lib/data/posts';
+	import { categories } from '$lib/data/categories';
+	import { projects } from '$lib/data/projects';
 
 	let visible = $state(false);
 	onMount(() => {
 		// Trigger entrance animation after mount
 		setTimeout(() => (visible = true), 100);
 	});
+
+	const articleCount = getPublishedPosts().length;
+	const categoryCount = categories.length;
+	const projectCount = projects.length;
 </script>
 
 <section class="hero" aria-label="Site introduction">
@@ -42,17 +49,17 @@
 		<!-- Stats row -->
 		<div class="hero-stats">
 			<div class="stat-item">
-				<span class="stat-number">8+</span>
+				<span class="stat-number">{articleCount}</span>
 				<span class="stat-label">Articles</span>
 			</div>
 			<div class="stat-divider"></div>
 			<div class="stat-item">
-				<span class="stat-number">5</span>
+				<span class="stat-number">{categoryCount}</span>
 				<span class="stat-label">Categories</span>
 			</div>
 			<div class="stat-divider"></div>
 			<div class="stat-item">
-				<span class="stat-number">5+</span>
+				<span class="stat-number">{projectCount}</span>
 				<span class="stat-label">Projects</span>
 			</div>
 		</div>

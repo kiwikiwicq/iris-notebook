@@ -1,4 +1,12 @@
 import { error } from '@sveltejs/kit';
+import { getPublishedPosts } from '$lib/data/posts';
+
+export const prerender = true;
+
+// Tell SvelteKit which slugs to pre-render
+export function entries() {
+	return getPublishedPosts().map((post) => ({ slug: post.slug }));
+}
 
 export async function load({ params }) {
 	const { slug } = params;

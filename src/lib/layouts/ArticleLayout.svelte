@@ -5,8 +5,13 @@
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import TOC from '$lib/components/TOC.svelte';
 	import Tag from '$lib/components/Tag.svelte';
+	import ShareButtons from '$lib/components/ShareButtons.svelte';
+	import ImageLightbox from '$lib/components/ImageLightbox.svelte';
+	import ArticleCard from '$lib/components/ArticleCard.svelte';
+	import { getRelatedPosts } from '$lib/data/posts';
 	import { onMount } from 'svelte';
 	import defaultAvatar from '$lib/assets/giphy.gif';
+	import { SITE_URL, SITE_OG_IMAGE } from '$lib/config';
 
 	interface Heading {
 		id: string;
@@ -22,6 +27,8 @@
 	}
 
 	let { post, prevPost = null, nextPost = null, children }: Props = $props();
+
+	const relatedPosts = $derived(getRelatedPosts(post.slug, post.category, 3));
 
 	let readingProgress = $state(0);
 	let headings = $state<Heading[]>([]);
@@ -49,29 +56,74 @@
 			if (!article) return;
 			const { top, height } = article.getBoundingClientRect();
 			const winH = window.innerHeight;
-			const progress = Math.max(0, Math.min(1, (-top) / (height - winH)));
+			const scrollable = height - winH;
+			// Guard against short articles where scrollable <= 0
+			if (scrollable <= 0) {
+				readingProgress = top <= 0 ? 1 : 0;
+				return;
+			}
+			const progress = Math.max(0, Math.min(1, (-top) / scrollable));
 			readingProgress = progress;
 		};
 
 		window.addEventListener('scroll', updateProgress, { passive: true });
 
-		// Bind code block copy buttons
+		// Bind code block copy buttons (with HTTP fallback)
 		const copyBtns = document.querySelectorAll('.copy-btn');
-		copyBtns.forEach(btn => {
+		copyBtns.forEach((btn) => {
 			btn.addEventListener('click', async () => {
 				const code = decodeURIComponent(btn.getAttribute('data-code') || '');
-				try {
-					await navigator.clipboard.writeText(code);
-					const textEl = btn.querySelector('.copy-text');
-					const iconEl = btn.querySelector('.material-symbols-rounded');
+				let success = false;
+
+				// Primary: modern Clipboard API
+				if (navigator.clipboard && window.isSecureContext) {
+					try {
+						await navigator.clipboard.writeText(code);
+						success = true;
+					} catch {
+						success = false;
+					}
+				}
+
+				// Fallback: execCommand (HTTP / older browsers)
+				if (!success) {
+					try {
+						const ta = document.createElement('textarea');
+						ta.value = code;
+						ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0';
+						document.body.appendChild(ta);
+						ta.focus();
+						ta.select();
+						success = document.execCommand('copy');
+						document.body.removeChild(ta);
+					} catch {
+						success = false;
+					}
+				}
+
+				const textEl = btn.querySelector('.copy-text') as HTMLElement | null;
+				const iconEl = btn.querySelector('.material-symbols-rounded') as HTMLElement | null;
+
+				if (success) {
+					// Show floating tooltip
+					const tooltip = document.createElement('span');
+					tooltip.className = 'copy-tooltip';
+					tooltip.textContent = 'Copied!';
+					(btn as HTMLElement).style.position = 'relative';
+					btn.appendChild(tooltip);
+					setTimeout(() => tooltip.remove(), 1800);
+
 					if (textEl) textEl.textContent = 'Copied!';
 					if (iconEl) iconEl.textContent = 'check';
 					setTimeout(() => {
 						if (textEl) textEl.textContent = 'Copy';
 						if (iconEl) iconEl.textContent = 'content_copy';
 					}, 2000);
-				} catch (err) {
-					console.error('Failed to copy', err);
+				} else {
+					if (textEl) textEl.textContent = 'Failed';
+					setTimeout(() => {
+						if (textEl) textEl.textContent = 'Copy';
+					}, 2000);
 				}
 			});
 		});
@@ -83,11 +135,34 @@
 <svelte:head>
 	<title>{post.title} – Iris Notebook</title>
 	<meta name="description" content={post.description} />
+	<meta name="author" content={post.author} />
+
+	<!-- Canonical -->
+	<link rel="canonical" href="{SITE_URL}/articles/{post.slug}" />
+
+	<!-- Open Graph (article) -->
 	<meta property="og:title" content={post.title} />
 	<meta property="og:description" content={post.description} />
 	<meta property="og:type" content="article" />
-	<meta name="article:published_time" content={post.date} />
-	<meta name="article:author" content={post.author} />
+	<meta property="og:url" content="{SITE_URL}/articles/{post.slug}" />
+	<meta property="og:image" content={post.image ? (post.image.startsWith('http') ? post.image : `${SITE_URL}${post.image}`) : SITE_OG_IMAGE} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="article:published_time" content={post.date} />
+	{#if post.updatedDate}
+		<meta property="article:modified_time" content={post.updatedDate} />
+	{/if}
+	<meta property="article:author" content={post.author} />
+	<meta property="article:section" content={post.category} />
+	{#each post.tags as tag}
+		<meta property="article:tag" content={tag} />
+	{/each}
+
+	<!-- Twitter / X Card -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={post.title} />
+	<meta name="twitter:description" content={post.description} />
+	<meta name="twitter:image" content={post.image ? (post.image.startsWith('http') ? post.image : `${SITE_URL}${post.image}`) : SITE_OG_IMAGE} />
 </svelte:head>
 
 <!-- Reading progress bar -->
@@ -156,6 +231,13 @@
 
 				<hr class="article-divider" />
 
+				<!-- Share Buttons -->
+				<div class="article-share">
+					<ShareButtons title={post.title} slug={post.slug} description={post.description} />
+				</div>
+
+				<hr class="article-divider" />
+
 				<!-- Author card -->
 				<AuthorCard />
 
@@ -184,6 +266,18 @@
 						{/if}
 					</nav>
 				{/if}
+
+				<!-- Related Articles -->
+				{#if relatedPosts.length > 0}
+					<section class="related-posts" aria-label="Related articles">
+						<h2 class="title-large">More in {post.category}</h2>
+						<div class="related-grid">
+							{#each relatedPosts as p, i}
+								<ArticleCard post={p} index={i} />
+							{/each}
+						</div>
+					</section>
+				{/if}
 			</article>
 
 			<!-- Sidebar TOC -->
@@ -193,6 +287,8 @@
 		</div>
 	</div>
 </main>
+
+<ImageLightbox />
 
 <style>
 	.article-page {
@@ -205,6 +301,36 @@
 		margin-bottom: var(--space-6);
 	}
 
+	.nav-article:hover .material-symbols-rounded {
+		transform: translateX(4px);
+		color: var(--md-sys-color-primary);
+	}
+
+	.nav-prev:hover .material-symbols-rounded {
+		transform: translateX(-4px);
+	}
+
+	.article-share {
+		margin-block: var(--space-8);
+	}
+
+	.related-posts {
+		margin-top: var(--space-12);
+		padding-top: var(--space-8);
+		border-top: 1px solid var(--md-sys-color-outline-variant);
+	}
+
+	.related-posts h2 {
+		margin-bottom: var(--space-6);
+		color: var(--md-sys-color-on-surface);
+	}
+
+	.related-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: var(--space-5);
+	}
+
 	.article-layout {
 		display: grid;
 		grid-template-columns: 1fr 280px;
@@ -212,12 +338,32 @@
 		align-items: start;
 	}
 
+	/* Responsive */
 	@media (max-width: 1024px) {
 		.article-layout {
 			grid-template-columns: 1fr;
 		}
+
 		.article-sidebar {
 			display: none;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.article-page {
+			padding-top: calc(var(--nav-height) + var(--space-4));
+		}
+		
+		.article-title {
+			font-size: 36px;
+		}
+
+		.article-nav {
+			flex-direction: column;
+		}
+
+		.nav-article {
+			width: 100%;
 		}
 	}
 

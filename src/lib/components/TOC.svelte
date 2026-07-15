@@ -11,6 +11,7 @@
 
 	let { headings }: Props = $props();
 	let activeId = $state('');
+	let sheetOpen = $state(false);
 
 	$effect(() => {
 		if (typeof window === 'undefined' || headings.length === 0) return;
@@ -41,11 +42,21 @@
 		const offset = 80;
 		const top = el.getBoundingClientRect().top + window.scrollY - offset;
 		window.scrollTo({ top, behavior: 'smooth' });
+		sheetOpen = false;
 	}
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (e.key === 'Escape') sheetOpen = false;
+	}
+
+	// Active heading index for the FAB label
+	const activeIndex = $derived(headings.findIndex((h) => h.id === activeId));
+	const activeText = $derived(activeIndex >= 0 ? headings[activeIndex].text : 'Contents');
 </script>
 
 {#if headings.length > 0}
-	<nav class="toc" aria-label="Table of contents">
+	<!-- Desktop: sidebar TOC (rendered by parent via aside) -->
+	<nav class="toc toc-desktop" aria-label="Table of contents">
 		<p class="toc-title label-medium">On this page</p>
 		<ol class="toc-list">
 			{#each headings as heading}
@@ -62,10 +73,48 @@
 			{/each}
 		</ol>
 	</nav>
+
+	<!-- Mobile: floating FAB -->
+	<button class="toc-fab" onclick={() => (sheetOpen = !sheetOpen)} aria-label="Table of contents" aria-expanded={sheetOpen}>
+		<span class="material-symbols-rounded">toc</span>
+		<span class="fab-label">{activeText}</span>
+		<span class="material-symbols-rounded fab-chevron" class:open={sheetOpen}>expand_less</span>
+	</button>
+
+	<!-- Mobile: bottom sheet -->
+	{#if sheetOpen}
+		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+		<div
+			class="toc-scrim"
+			role="presentation"
+			aria-hidden="true"
+			onclick={() => (sheetOpen = false)}
+			onkeydown={handleKeydown}
+		></div>
+		<div class="toc-sheet animate-slide-up" role="dialog" aria-label="Table of contents">
+			<div class="sheet-handle"></div>
+			<p class="toc-title label-medium">On this page</p>
+			<ol class="toc-list sheet-list">
+				{#each headings as heading, i}
+					<li class="toc-item" style="--indent: {(heading.level - 2) * 16}px; --delay: {i * 30}ms">
+						<button
+							class="toc-link"
+							class:active={activeId === heading.id}
+							onclick={() => scrollTo(heading.id)}
+							aria-current={activeId === heading.id ? 'location' : undefined}
+						>
+							{heading.text}
+						</button>
+					</li>
+				{/each}
+			</ol>
+		</div>
+	{/if}
 {/if}
 
 <style>
-	.toc {
+	/* ── Desktop sidebar ── */
+	.toc-desktop {
 		position: sticky;
 		top: calc(var(--nav-height) + var(--space-6));
 		max-height: calc(100vh - var(--nav-height) - var(--space-12));
@@ -121,5 +170,92 @@
 		color: var(--md-sys-color-primary);
 		font-weight: 600;
 		background: var(--md-sys-color-primary-container);
+	}
+
+	/* ── Mobile FAB ── */
+	.toc-fab {
+		display: none; /* shown via media query */
+		align-items: center;
+		gap: var(--space-2);
+		position: fixed;
+		bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 80;
+		padding: 10px 18px 10px 14px;
+		border-radius: var(--md-sys-shape-corner-full);
+		border: 1px solid var(--md-sys-color-outline-variant);
+		background: var(--md-sys-color-surface-container-highest);
+		color: var(--md-sys-color-on-surface);
+		font-family: var(--font-body);
+		font-size: 13px;
+		font-weight: 500;
+		cursor: pointer;
+		box-shadow: var(--md-sys-elevation-3);
+		max-width: 80vw;
+		backdrop-filter: blur(12px);
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	.toc-fab .material-symbols-rounded { font-size: 20px; flex-shrink: 0; }
+
+	.fab-label {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 180px;
+	}
+
+	.fab-chevron {
+		color: var(--md-sys-color-on-surface-variant);
+		transition: transform var(--motion-duration-short4) var(--motion-easing-standard);
+	}
+
+	.fab-chevron.open { transform: rotate(180deg); }
+
+	/* ── Bottom sheet ── */
+	.toc-scrim {
+		position: fixed;
+		inset: 0;
+		z-index: 89;
+		background: rgba(0,0,0,0.32);
+	}
+
+	.toc-sheet {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 90;
+		background: var(--md-sys-color-surface-container-low);
+		border-radius: 28px 28px 0 0;
+		padding: var(--space-2) var(--space-5) calc(var(--space-8) + env(safe-area-inset-bottom, 0px));
+		max-height: 70vh;
+		overflow-y: auto;
+		box-shadow: var(--md-sys-elevation-5);
+	}
+
+	.sheet-handle {
+		width: 36px;
+		height: 4px;
+		border-radius: 2px;
+		background: var(--md-sys-color-outline-variant);
+		margin: var(--space-3) auto var(--space-4);
+	}
+
+	.sheet-list .toc-link {
+		font-size: 15px;
+		padding: var(--space-3) var(--space-3);
+	}
+
+	.sheet-list .toc-item {
+		animation: slide-up var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate) var(--delay, 0ms) both;
+	}
+
+	/* Show FAB only on mobile */
+	@media (max-width: 1024px) {
+		.toc-desktop { display: none; }
+		.toc-fab { display: flex; }
 	}
 </style>

@@ -24,7 +24,10 @@ export { readingTime, readingTimeLabel } from './utils/reading-time';
 export { formatDate, formatRelativeDate, isoDate } from './utils/format-date';
 export { loadMaterialComponents } from './utils/material';
 
-// Data exports
+/** Data exports */
 export { posts, getPublishedPosts, getFeaturedPosts, getPostBySlug, getPostsByCategory } from './data/posts';
 export { categories, getCategoryBySlug, getCategoryColor } from './data/categories';
 export { projects, getFeaturedProjects } from './data/projects';
+
+// Config
+export * from './config';

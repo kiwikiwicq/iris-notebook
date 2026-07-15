@@ -70,7 +70,7 @@ a {
 }
 
 a:hover {
-  color: var(--md-sys-color-primary-container);
+  color: color-mix(in srgb, var(--md-sys-color-primary) 80%, black);
 }
 
 img {
@@ -363,4 +363,37 @@ html[data-theme='dark'] .shiki span {
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
   background-color: transparent !important;
+}
+
+/* ── Copy tooltip ── */
+.copy-tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--md-sys-shape-corner-full);
+  white-space: nowrap;
+  pointer-events: none;
+  animation: tooltip-pop 0.18s var(--motion-easing-emphasized-decelerate) both;
+  z-index: 10;
+}
+
+.copy-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--md-sys-color-inverse-surface);
+}
+
+@keyframes tooltip-pop {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px) scale(0.9); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
 }

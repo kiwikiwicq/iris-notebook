@@ -17,14 +17,28 @@ export interface Post {
 // Load all markdown files from src/content/posts
 const markdownFiles = import.meta.glob('/src/content/posts/*.{md,mdx,svx}', { eager: true });
 
+/** Estimate reading time from the compiled HTML or raw content string. */
+function computeReadingTime(resolver: any): number {
+	const WPM = 238;
+	// mdsvex exposes the compiled HTML via .html (some versions) or we fall back to metadata
+	const html: string = resolver.html ?? '';
+	if (html) {
+		// Strip HTML tags to get plain text word count
+		const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+		const words = text.split(' ').filter(Boolean).length;
+		return Math.max(1, Math.round(words / WPM));
+	}
+	return resolver.metadata?.readingTime ?? 5;
+}
+
 export const posts: Post[] = Object.entries(markdownFiles)
 	.map(([path, resolver]: [string, any]) => {
 		// Extract frontmatter metadata from the module
 		const metadata = resolver.metadata || {};
-		
+
 		// Get slug from filename
 		const slug = path.split('/').pop()?.split('.')[0] || '';
-		
+
 		// Ensure date is a valid string for localeCompare
 		let safeDate = new Date().toISOString().split('T')[0];
 		if (typeof metadata.date === 'string' && !isNaN(Date.parse(metadata.date))) {
@@ -47,7 +61,7 @@ export const posts: Post[] = Object.entries(markdownFiles)
 			updatedDate: metadata.updatedDate,
 			category: metadata.category || 'Uncategorized',
 			tags: safeTags,
-			readingTime: metadata.readingTime || 5,
+			readingTime: computeReadingTime(resolver),
 			image: metadata.image || `/images/categories/${(metadata.category || 'programming').toLowerCase()}.svg`,
 			imageAlt: metadata.imageAlt || metadata.title || 'Cover image',
 			author: metadata.author || 'Iris',

@@ -3,6 +3,8 @@
 	import { formatDate } from '$lib/utils/format-date';
 	import { getCategoryColor } from '$lib/data/categories';
 	import Tag from './Tag.svelte';
+	import { bookmarksStore } from '$lib/stores/bookmarks.svelte';
+	import { onMount } from 'svelte';
 
 	interface Props {
 		post: Post;
@@ -24,8 +26,18 @@
 		'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
 	];
 
-	const gradient = gradients[index % gradients.length];
-	const categoryColor = getCategoryColor(post.category);
+	const gradient = $derived(gradients[index % gradients.length]);
+	const categoryColor = $derived(getCategoryColor(post.category));
+
+	onMount(() => bookmarksStore.init());
+
+	const bookmarked = $derived(bookmarksStore.isBookmarked(post.slug));
+
+	function toggleBookmark(e: MouseEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+		bookmarksStore.toggle(post.slug);
+	}
 </script>
 
 <article class="article-card" class:featured>
@@ -33,12 +45,23 @@
 		<!-- Thumbnail -->
 		<div class="card-image" style="background: {gradient}">
 			{#if post.image && !post.image.endsWith('.svg')}
-				<img src={post.image} alt={post.imageAlt} class="article-thumbnail" />
+				<img src={post.image} alt={post.imageAlt} class="article-thumbnail" loading="lazy" decoding="async" />
 			{/if}
 			<div class="card-image-overlay">
 				<span class="category-badge" style="--cat-color: {categoryColor}">
 					{post.category}
 				</span>
+				<button
+					class="bookmark-btn"
+					class:bookmarked
+					onclick={toggleBookmark}
+					aria-label={bookmarked ? 'Remove bookmark' : 'Save article'}
+					title={bookmarked ? 'Remove bookmark' : 'Save article'}
+				>
+					<span class="material-symbols-rounded" style="font-variation-settings: 'FILL' {bookmarked ? 1 : 0}, 'wght' 400, 'GRAD' 0, 'opsz' 24">
+						bookmark
+					</span>
+				</button>
 			</div>
 		</div>
 
@@ -119,6 +142,7 @@
 		inset: 0;
 		display: flex;
 		align-items: flex-start;
+		justify-content: space-between;
 		padding: var(--space-4);
 		background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%);
 	}
@@ -135,6 +159,43 @@
 		letter-spacing: 0.5px;
 		backdrop-filter: blur(8px);
 	}
+
+	.bookmark-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 34px;
+		height: 34px;
+		border-radius: var(--md-sys-shape-corner-full);
+		border: none;
+		background: rgba(255, 255, 255, 0.85);
+		color: var(--md-sys-color-on-surface-variant);
+		cursor: pointer;
+		backdrop-filter: blur(8px);
+		transition:
+			background var(--motion-duration-short4) var(--motion-easing-standard),
+			color var(--motion-duration-short4) var(--motion-easing-standard),
+			transform var(--motion-duration-short4) var(--motion-easing-standard);
+		opacity: 0;
+	}
+
+	.article-card:hover .bookmark-btn,
+	.bookmark-btn.bookmarked {
+		opacity: 1;
+	}
+
+	.bookmark-btn.bookmarked {
+		background: var(--md-sys-color-primary);
+		color: var(--md-sys-color-on-primary);
+	}
+
+	.bookmark-btn:hover {
+		transform: scale(1.12);
+		background: var(--md-sys-color-primary-container);
+		color: var(--md-sys-color-on-primary-container);
+	}
+
+	.bookmark-btn .material-symbols-rounded { font-size: 18px; }
 
 	/* Content area */
 	.card-content {
