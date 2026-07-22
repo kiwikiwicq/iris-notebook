@@ -275,19 +275,23 @@ img {
 /* ── Skip to content (a11y) ── */
 .skip-link {
   position: absolute;
-  top: -40px;
+  top: -100px;
   left: 0;
+  opacity: 0;
+  pointer-events: none;
   background: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary);
   padding: var(--space-2) var(--space-4);
   z-index: 10000;
   border-radius: var(--md-sys-shape-corner-small);
   font-weight: 500;
-  transition: top var(--motion-duration-short3);
+  transition: top var(--motion-duration-short3), opacity var(--motion-duration-short3);
 }
 
 .skip-link:focus {
   top: var(--space-2);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* ── Code Blocks (Shiki + Mdsvex) ── */
