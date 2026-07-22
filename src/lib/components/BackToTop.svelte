@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import SFIcon from './SFIcon.svelte';
 
 	let show = $state(false);
 
 	$effect(() => {
 		if (typeof window === 'undefined') return;
 		const handleScroll = () => {
-			// Show button after scrolling down 400px
 			show = window.scrollY > 400;
 		};
 		window.addEventListener('scroll', handleScroll, { passive: true });
@@ -30,7 +29,7 @@
 	aria-hidden={!show}
 	tabindex={show ? 0 : -1}
 >
-	<span class="material-symbols-rounded">arrow_upward</span>
+	<SFIcon name="arrowUp" size={18} />
 </button>
 
 <style>
@@ -38,18 +37,20 @@
 		position: fixed;
 		bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
 		right: var(--space-6);
-		z-index: 85; /* Below overlays/bottom sheets (90+), above normal content */
+		z-index: 85;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 48px;
-		height: 48px;
+		width: 44px;
+		height: 44px;
 		border-radius: var(--md-sys-shape-corner-full);
-		border: 1px solid var(--md-sys-color-outline-variant);
-		background: var(--md-sys-color-primary-container);
-		color: var(--md-sys-color-on-primary-container);
+		border: 1px solid var(--liquid-glass-border);
+		background: var(--liquid-glass-bg);
+		backdrop-filter: var(--liquid-blur);
+		-webkit-backdrop-filter: var(--liquid-blur);
+		color: var(--md-sys-color-on-surface);
 		cursor: pointer;
-		box-shadow: var(--md-sys-elevation-3);
+		box-shadow: var(--liquid-glass-shadow);
 		opacity: 0;
 		visibility: hidden;
 		transform: translateY(20px) scale(0.9);
@@ -58,7 +59,7 @@
 			visibility var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate),
 			transform var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate),
 			background var(--motion-duration-short4) var(--motion-easing-standard),
-			box-shadow var(--motion-duration-short4) var(--motion-easing-standard);
+			border-color var(--motion-duration-short4) var(--motion-easing-standard);
 	}
 
 	.back-to-top.show {
@@ -68,8 +69,8 @@
 	}
 
 	.back-to-top:hover {
-		background: color-mix(in srgb, var(--md-sys-color-primary-container) 85%, var(--md-sys-color-on-primary-container));
-		box-shadow: var(--md-sys-elevation-4);
+		background: rgba(140, 140, 145, 0.2);
+		border-color: rgba(255, 255, 255, 0.3);
 		transform: translateY(-2px) scale(1.02);
 	}
 
@@ -77,14 +78,9 @@
 		transform: translateY(0) scale(0.98);
 	}
 
-	.back-to-top .material-symbols-rounded {
-		font-size: 24px;
-	}
-
-	/* On mobile, move it up slightly so it doesn't collide with the mobile TOC FAB */
-	@media (max-width: 1024px) {
+	@media (max-width: 768px) {
 		.back-to-top {
-			bottom: calc(var(--space-20) + env(safe-area-inset-bottom, 0px));
+			display: none !important;
 		}
 	}
 </style>

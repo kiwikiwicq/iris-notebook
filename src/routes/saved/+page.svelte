@@ -4,6 +4,7 @@
 	import { getPublishedPosts } from '$lib/data/posts';
 	import ArticleCard from '$lib/components/ArticleCard.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+	import SFIcon from '$lib/components/SFIcon.svelte';
 
 	const allPosts = getPublishedPosts();
 
@@ -15,7 +16,7 @@
 </script>
 
 <svelte:head>
-	<title>Saved Articles – Iris Notebook</title>
+	<title>Saved Articles — Iris Notebook</title>
 	<meta name="description" content="Your saved and bookmarked articles on Iris Notebook." />
 	<meta name="robots" content="noindex" />
 </svelte:head>
@@ -26,7 +27,7 @@
 
 		<header class="page-header">
 			<div class="page-label">
-				<span class="material-symbols-rounded icon-filled" style="color: var(--md-sys-color-primary)">bookmarks</span>
+				<SFIcon name="bookmarked" size={15} />
 				<span class="label-medium">Reading List</span>
 			</div>
 			<h1 class="display-small">Saved Articles</h1>
@@ -41,9 +42,9 @@
 
 		{#if savedPosts.length > 0}
 			<div class="toolbar">
-				<button class="clear-btn" onclick={() => bookmarksStore.clear()}>
-					<span class="material-symbols-rounded">delete_sweep</span>
-					Clear all bookmarks
+				<button class="clear-btn liquid-glass" onclick={() => bookmarksStore.clear()}>
+					<SFIcon name="close" size={14} />
+					<span>Clear all bookmarks</span>
 				</button>
 			</div>
 
@@ -53,17 +54,17 @@
 				{/each}
 			</div>
 		{:else}
-			<div class="empty-state">
+			<div class="empty-state liquid-glass">
 				<div class="empty-icon">
-					<span class="material-symbols-rounded">bookmark_border</span>
+					<SFIcon name="bookmark" size={32} />
 				</div>
 				<h2 class="headline-small">No saved articles yet</h2>
 				<p class="body-large">
 					Click the bookmark icon on any article card to save it here for later.
 				</p>
 				<a href="/articles" class="btn-primary">
-					<span class="material-symbols-rounded">article</span>
-					Browse Articles
+					<SFIcon name="articles" size={15} color="var(--md-sys-color-surface)" />
+					<span>Browse Articles</span>
 				</a>
 			</div>
 		{/if}
@@ -78,26 +79,21 @@
 	}
 
 	.page-header {
-		margin-block: var(--space-6) var(--space-10);
+		margin-block: var(--space-6) var(--space-8);
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-3);
 	}
 
 	.page-label {
-		display: inline-flex;
+		display: flex;
 		align-items: center;
 		gap: var(--space-2);
-		font-size: 13px;
-		font-weight: 600;
-		color: var(--md-sys-color-primary);
-		text-transform: uppercase;
-		letter-spacing: 1px;
+		color: var(--md-sys-color-on-surface-variant);
 	}
 
 	.page-subtitle {
 		color: var(--md-sys-color-on-surface-variant);
-		max-width: 56ch;
 	}
 
 	.toolbar {
@@ -112,87 +108,61 @@
 		gap: var(--space-2);
 		padding: 8px 16px;
 		border-radius: var(--md-sys-shape-corner-full);
-		border: 1px solid var(--md-sys-color-error);
-		background: transparent;
-		color: var(--md-sys-color-error);
-		font-family: var(--font-body);
+		color: var(--md-sys-color-on-surface);
 		font-size: 13px;
 		font-weight: 500;
 		cursor: pointer;
-		transition:
-			background var(--motion-duration-short4) var(--motion-easing-standard),
-			color var(--motion-duration-short4) var(--motion-easing-standard);
+		transition: background 0.2s ease;
 	}
 
 	.clear-btn:hover {
-		background: var(--md-sys-color-error-container);
-		color: var(--md-sys-color-on-error-container);
-		border-color: transparent;
+		background: rgba(140, 140, 145, 0.2);
 	}
-
-	.clear-btn .material-symbols-rounded { font-size: 18px; }
 
 	.posts-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 		gap: var(--space-6);
 	}
 
-	@media (max-width: 480px) {
-		.posts-grid { grid-template-columns: 1fr; }
-	}
-
-	/* Empty state */
 	.empty-state {
+		text-align: center;
+		padding: var(--space-16) var(--space-6);
+		border-radius: 24px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		text-align: center;
-		gap: var(--space-5);
-		padding: var(--space-20) var(--space-6);
-		max-width: 480px;
-		margin: 0 auto;
+		gap: var(--space-4);
+		color: var(--md-sys-color-on-surface-variant);
 	}
 
 	.empty-icon {
-		width: 80px;
-		height: 80px;
+		width: 64px;
+		height: 64px;
 		border-radius: 50%;
-		background: var(--md-sys-color-primary-container);
-		color: var(--md-sys-color-on-primary-container);
+		background: rgba(140, 140, 145, 0.16);
+		border: 1px solid var(--glass-border);
+		color: var(--md-sys-color-on-surface);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 
-	.empty-icon .material-symbols-rounded { font-size: 40px; }
-
-	.empty-state h2 { color: var(--md-sys-color-on-surface); }
-
-	.empty-state p {
-		color: var(--md-sys-color-on-surface-variant);
-		max-width: 38ch;
-	}
-
 	.btn-primary {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--space-2);
-		padding: 14px 28px;
-		border-radius: var(--shape-button);
-		background: var(--md-sys-color-primary);
-		color: var(--md-sys-color-on-primary);
-		font-size: 15px;
+		gap: 8px;
+		padding: 11px 22px;
+		border-radius: var(--md-sys-shape-corner-full);
+		background: var(--md-sys-color-on-surface);
+		color: var(--md-sys-color-surface);
+		font-size: 14px;
 		font-weight: 600;
 		text-decoration: none;
-		transition:
-			transform var(--motion-duration-short4) var(--motion-easing-standard),
-			box-shadow var(--motion-duration-short4) var(--motion-easing-standard);
+		transition: opacity 0.2s ease;
 	}
 
 	.btn-primary:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 6px 20px rgba(103, 80, 164, 0.4);
-		color: var(--md-sys-color-on-primary);
+		opacity: 0.92;
 	}
 </style>

@@ -3,6 +3,7 @@
 	import CategoryChip from '$lib/components/CategoryChip.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+	import SFIcon from '$lib/components/SFIcon.svelte';
 	import { getPublishedPosts } from '$lib/data/posts';
 	import { categories } from '$lib/data/categories';
 	import { page } from '$app/stores';
@@ -46,8 +47,8 @@
 </script>
 
 <svelte:head>
-	<title>Articles – Iris Notebook</title>
-	<meta name="description" content="Browse all articles on programming, Android, Linux, AI, and more from Iris Notebook." />
+	<title>Articles — Iris Notebook</title>
+	<meta name="description" content="Browse all articles on programming, Android, Linux, AI, and software architecture." />
 </svelte:head>
 
 <main class="articles-page" id="main-content">
@@ -57,7 +58,7 @@
 		<header class="page-header">
 			<h1 class="display-small">Articles</h1>
 			<p class="body-large page-subtitle">
-				{allPosts.length} articles on programming, Android, Linux, AI, and more.
+				{allPosts.length} technical engineering articles and runtime deep dives.
 			</p>
 		</header>
 
@@ -88,10 +89,10 @@
 				{/each}
 			</div>
 		{:else}
-			<div class="empty-state">
-				<span class="material-symbols-rounded">search_off</span>
+			<div class="empty-state liquid-glass">
+				<SFIcon name="search" size={48} />
 				<h2 class="headline-small">No posts found</h2>
-				<p class="body-large">Try a different category or check back later.</p>
+				<p class="body-large">Try selecting a different category or clear the filter.</p>
 				<button class="btn-outlined-primary" onclick={() => selectCategory('')}>
 					Clear filter
 				</button>
@@ -132,25 +133,35 @@
 	.filter-all {
 		display: inline-flex;
 		align-items: center;
-		padding: 8px 16px;
-		border-radius: var(--md-sys-shape-corner-small);
-		border: 1px solid var(--md-sys-color-outline-variant);
-		background: var(--md-sys-color-surface-container-low);
+		padding: 8px 18px;
+		border-radius: var(--md-sys-shape-corner-full);
+		border: 1px solid var(--liquid-glass-border);
+		background: var(--liquid-glass-bg);
+		backdrop-filter: var(--liquid-blur);
+		-webkit-backdrop-filter: var(--liquid-blur);
+		box-shadow: var(--liquid-glass-shadow);
 		color: var(--md-sys-color-on-surface-variant);
 		font-family: var(--font-body);
-		font-size: 14px;
+		font-size: 13px;
 		font-weight: 500;
+		letter-spacing: -0.01em;
 		cursor: pointer;
 		transition:
 			background var(--motion-duration-short4) var(--motion-easing-standard),
-			color var(--motion-duration-short4) var(--motion-easing-standard);
+			color var(--motion-duration-short4) var(--motion-easing-standard),
+			border-color var(--motion-duration-short4) var(--motion-easing-standard);
 	}
 
-	.filter-all.active,
 	.filter-all:hover {
-		background: var(--md-sys-color-secondary-container);
-		color: var(--md-sys-color-on-secondary-container);
-		border-color: transparent;
+		background: rgba(140, 140, 145, 0.16);
+		color: var(--md-sys-color-on-surface);
+	}
+
+	.filter-all.active {
+		background: rgba(140, 140, 145, 0.22);
+		border-color: rgba(140, 140, 145, 0.35);
+		color: var(--md-sys-color-on-surface);
+		font-weight: 600;
 	}
 
 	.posts-grid {
@@ -165,7 +176,8 @@
 
 	.empty-state {
 		text-align: center;
-		padding: var(--space-20) var(--space-6);
+		padding: var(--space-16) var(--space-6);
+		border-radius: 24px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

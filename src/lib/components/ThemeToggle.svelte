@@ -1,52 +1,74 @@
 <script lang="ts">
 	import { themeStore } from '$lib/stores/theme.svelte';
+	import SFIcon from './SFIcon.svelte';
 
 	let isDark = $derived(themeStore.isDark);
 </script>
 
 <button
 	class="theme-toggle"
+	class:dark={isDark}
 	onclick={() => themeStore.toggle()}
 	aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
 	title={isDark ? 'Light mode' : 'Dark mode'}
 >
-	<span class="material-symbols-rounded icon" class:rotate={isDark}>
-		{isDark ? 'dark_mode' : 'light_mode'}
-	</span>
+	<div class="toggle-track">
+		<div class="toggle-thumb">
+			{#if isDark}
+				<SFIcon name="darkMode" size={12} color="#000000" />
+			{:else}
+				<SFIcon name="lightMode" size={12} color="#1D1D1F" />
+			{/if}
+		</div>
+	</div>
 </button>
 
 <style>
 	.theme-toggle {
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		width: 40px;
-		height: 40px;
+		padding: 2px;
 		border-radius: var(--md-sys-shape-corner-full);
-		border: none;
-		background: transparent;
-		color: var(--md-sys-color-on-surface-variant);
+		border: 1px solid var(--glass-border);
+		background: rgba(140, 140, 145, 0.15);
 		cursor: pointer;
-		transition:
-			background var(--motion-duration-short4) var(--motion-easing-standard),
-			color var(--motion-duration-short4) var(--motion-easing-standard);
+		transition: background var(--motion-duration-short4) var(--motion-easing-standard);
 	}
 
 	.theme-toggle:hover {
-		background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
-		color: var(--md-sys-color-on-surface);
+		background: rgba(140, 140, 145, 0.25);
+		border-color: rgba(255, 255, 255, 0.25);
 	}
 
-	.theme-toggle:active {
-		background: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+	.toggle-track {
+		position: relative;
+		width: 44px;
+		height: 24px;
+		border-radius: 9999px;
 	}
 
-	.icon {
-		font-size: 22px;
-		transition: transform var(--motion-duration-medium2) var(--motion-easing-emphasized);
+	.toggle-thumb {
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background: #ffffff;
+		color: #1d1d1f;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+		transition:
+			transform var(--motion-duration-medium1) var(--motion-easing-standard),
+			background var(--motion-duration-medium1) var(--motion-easing-standard),
+			color var(--motion-duration-medium1) var(--motion-easing-standard);
 	}
 
-	.icon.rotate {
-		transform: rotate(20deg);
+	.dark .toggle-thumb {
+		transform: translateX(20px);
+		background: #ffffff;
+		color: #000000;
 	}
 </style>

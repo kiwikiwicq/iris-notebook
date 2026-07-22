@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SFIcon from './SFIcon.svelte';
+
 	interface Crumb {
 		label: string;
 		href?: string;
@@ -23,7 +25,7 @@
 			</li>
 			{#if i < crumbs.length - 1}
 				<li class="sep" aria-hidden="true">
-					<span class="material-symbols-rounded">chevron_right</span>
+					<SFIcon name="arrowRight" size={12} color="var(--md-sys-color-on-surface-variant)" />
 				</li>
 			{/if}
 		{/each}
@@ -35,7 +37,7 @@
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
-		gap: 0;
+		gap: 2px;
 		list-style: none;
 	}
 
@@ -50,13 +52,12 @@
 		color: var(--md-sys-color-on-surface-variant);
 		text-decoration: none;
 		padding: 4px 6px;
-		border-radius: var(--md-sys-shape-corner-extra-small);
-		transition: background var(--motion-duration-short4) var(--motion-easing-standard),
-		            color var(--motion-duration-short4) var(--motion-easing-standard);
+		border-radius: 6px;
+		transition: background 0.2s ease, color 0.2s ease;
 	}
 
 	.breadcrumbs a:hover {
-		background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+		background: rgba(140, 140, 145, 0.14);
 		color: var(--md-sys-color-on-surface);
 	}
 
@@ -67,8 +68,19 @@
 		padding: 4px 6px;
 	}
 
-	.sep .material-symbols-rounded {
-		font-size: 16px;
-		color: var(--md-sys-color-outline);
+	.sep {
+		opacity: 0.6;
+		padding-inline: 2px;
+	}
+
+	@media (max-width: 640px) {
+		.breadcrumbs span[aria-current='page'] {
+			max-width: 160px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: inline-block;
+			vertical-align: middle;
+		}
 	}
 </style>

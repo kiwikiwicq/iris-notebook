@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Category } from '$lib/data/categories';
+	import SFIcon from './SFIcon.svelte';
 
 	interface Props {
 		category: Category;
@@ -14,10 +15,9 @@
 	class="category-chip"
 	class:active
 	onclick={() => onclick?.(category.slug)}
-	style="--chip-color: {category.color}; --chip-container: {category.colorContainer}"
 	aria-pressed={active}
 >
-	<span class="material-symbols-rounded chip-icon">{category.icon}</span>
+	<SFIcon name="code" size={15} color="currentColor" />
 	<span class="chip-label">{category.name}</span>
 </button>
 
@@ -25,42 +25,39 @@
 	.category-chip {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--space-2);
-		padding: 8px 16px;
-		border-radius: var(--md-sys-shape-corner-small);
-		border: 1px solid var(--md-sys-color-outline-variant);
-		background: var(--md-sys-color-surface-container-low);
+		gap: 8px;
+		padding: 8px 18px;
+		border-radius: var(--md-sys-shape-corner-full);
+		border: 1px solid var(--liquid-glass-border);
+		background: var(--liquid-glass-bg);
+		backdrop-filter: var(--liquid-blur);
+		-webkit-backdrop-filter: var(--liquid-blur);
+		box-shadow: var(--liquid-glass-shadow);
 		color: var(--md-sys-color-on-surface-variant);
 		font-family: var(--font-body);
-		font-size: 14px;
+		font-size: 13px;
 		font-weight: 500;
-		letter-spacing: 0.1px;
+		letter-spacing: -0.01em;
 		cursor: pointer;
 		transition:
-			background var(--motion-duration-short4) var(--motion-easing-standard),
-			color var(--motion-duration-short4) var(--motion-easing-standard),
-			border-color var(--motion-duration-short4) var(--motion-easing-standard),
-			transform var(--motion-duration-short3) var(--motion-easing-standard),
-			box-shadow var(--motion-duration-short4) var(--motion-easing-standard);
+			background 0.2s ease,
+			color 0.2s ease,
+			border-color 0.2s ease,
+			transform 0.2s ease;
 	}
 
 	.category-chip:hover {
-		background: var(--chip-container, var(--md-sys-color-surface-container-high));
-		border-color: var(--chip-color, var(--md-sys-color-primary));
-		color: var(--chip-color, var(--md-sys-color-primary));
-		transform: translateY(-2px);
-		box-shadow: 0 4px 12px color-mix(in srgb, var(--chip-color, #6750A4) 20%, transparent);
+		background: rgba(140, 140, 145, 0.16);
+		color: var(--md-sys-color-on-surface);
+		transform: translateY(-1px);
 	}
 
 	.category-chip.active {
-		background: var(--chip-container, var(--md-sys-color-primary-container));
-		border-color: var(--chip-color, var(--md-sys-color-primary));
-		color: var(--chip-color, var(--md-sys-color-primary));
+		background: rgba(140, 140, 145, 0.22);
+		border-color: rgba(140, 140, 145, 0.35);
+		color: var(--md-sys-color-on-surface);
 		font-weight: 600;
-	}
-
-	.chip-icon {
-		font-size: 18px;
+		box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 4px 12px rgba(0, 0, 0, 0.08);
 	}
 
 	.chip-label {

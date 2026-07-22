@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import SFIcon from '$lib/components/SFIcon.svelte';
 </script>
 
 <svelte:head>
-	<title>{$page.status} – Iris Notebook</title>
+	<title>{$page.status} — Iris Notebook</title>
 </svelte:head>
 
 <main class="error-page">
 	<div class="container">
-		<div class="error-content">
-			<span class="material-symbols-rounded error-icon">
-				{$page.status === 404 ? 'travel_explore' : 'warning'}
-			</span>
+		<div class="error-content liquid-glass">
+			<div class="error-icon-wrap">
+				<SFIcon name="search" size={36} />
+			</div>
 			<h1 class="display-medium error-code">{$page.status}</h1>
 			<h2 class="headline-small error-title">
 				{$page.status === 404 ? 'Page not found' : 'Something went wrong'}
@@ -22,12 +23,12 @@
 			
 			<div class="actions">
 				<a href="/" class="btn-primary">
-					<span class="material-symbols-rounded">home</span>
-					Return to Home
+					<SFIcon name="articles" size={15} color="var(--md-sys-color-surface)" />
+					<span>Return to Home</span>
 				</a>
-				<button class="btn-outlined-primary" onclick={() => window.history.back()}>
-					<span class="material-symbols-rounded">arrow_back</span>
-					Go Back
+				<button class="btn-outlined" onclick={() => window.history.back()}>
+					<SFIcon name="arrowRight" size={15} class="icon-flip" />
+					<span>Go Back</span>
 				</button>
 			</div>
 		</div>
@@ -48,29 +49,30 @@
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		max-width: 600px;
+		max-width: 560px;
 		margin: 0 auto;
-		background: var(--md-sys-color-surface-container-low);
 		padding: var(--space-12) var(--space-8);
-		border-radius: var(--md-sys-shape-corner-extra-large);
-		border: 1px solid var(--md-sys-color-outline-variant);
-		box-shadow: var(--card-shadow-resting);
+		border-radius: 28px;
 	}
 
-	.error-icon {
-		font-size: 72px;
-		color: var(--md-sys-color-primary);
+	.error-icon-wrap {
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		background: rgba(140, 140, 145, 0.16);
+		border: 1px solid var(--glass-border);
+		color: var(--md-sys-color-on-surface);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		margin-bottom: var(--space-4);
-		opacity: 0.9;
 	}
 
 	.error-code {
 		font-weight: 800;
-		background: linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-tertiary));
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+		color: var(--md-sys-color-on-surface);
 		margin-bottom: var(--space-2);
+		letter-spacing: -0.03em;
 	}
 
 	.error-title {
@@ -86,7 +88,7 @@
 
 	.actions {
 		display: flex;
-		gap: var(--space-4);
+		gap: var(--space-3);
 		flex-wrap: wrap;
 		justify-content: center;
 	}
@@ -94,46 +96,38 @@
 	.btn-primary {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--space-2);
-		padding: 12px 28px;
-		border-radius: var(--shape-button);
-		background: var(--md-sys-color-primary);
-		color: var(--md-sys-color-on-primary);
+		gap: 8px;
+		padding: 11px 22px;
+		border-radius: var(--md-sys-shape-corner-full);
+		background: var(--md-sys-color-on-surface);
+		color: var(--md-sys-color-surface);
 		font-size: 14px;
 		font-weight: 600;
 		text-decoration: none;
-		transition:
-			background var(--motion-duration-short4) var(--motion-easing-standard),
-			transform var(--motion-duration-short4) var(--motion-easing-standard);
+		transition: opacity 0.2s ease;
 	}
 
 	.btn-primary:hover {
-		background: var(--md-sys-color-primary-container);
-		color: var(--md-sys-color-on-primary-container);
-		transform: translateY(-2px);
+		opacity: 0.92;
 	}
 
-	.btn-outlined-primary {
+	.btn-outlined {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--space-2);
-		padding: 12px 28px;
-		border-radius: var(--shape-button);
-		border: 1.5px solid var(--md-sys-color-primary);
-		color: var(--md-sys-color-primary);
+		gap: 8px;
+		padding: 11px 22px;
+		border-radius: var(--md-sys-shape-corner-full);
+		border: 1px solid var(--glass-border);
+		background: rgba(140, 140, 145, 0.1);
+		color: var(--md-sys-color-on-surface);
 		font-size: 14px;
-		font-weight: 600;
-		background: transparent;
+		font-weight: 500;
 		cursor: pointer;
 		font-family: var(--font-body);
-		transition:
-			background var(--motion-duration-short4) var(--motion-easing-standard),
-			transform var(--motion-duration-short4) var(--motion-easing-standard);
+		transition: background 0.2s ease;
 	}
 
-	.btn-outlined-primary:hover {
-		background: var(--md-sys-color-primary-container);
-		color: var(--md-sys-color-on-primary-container);
-		transform: translateY(-2px);
+	.btn-outlined:hover {
+		background: rgba(140, 140, 145, 0.2);
 	}
 </style>

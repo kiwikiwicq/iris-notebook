@@ -8,6 +8,7 @@
 	import ShareButtons from '$lib/components/ShareButtons.svelte';
 	import ImageLightbox from '$lib/components/ImageLightbox.svelte';
 	import ArticleCard from '$lib/components/ArticleCard.svelte';
+	import SFIcon from '$lib/components/SFIcon.svelte';
 	import { getRelatedPosts } from '$lib/data/posts';
 	import { onMount } from 'svelte';
 	import defaultAvatar from '$lib/assets/giphy.gif';
@@ -195,8 +196,8 @@
 				<!-- Header -->
 				<header class="article-header">
 					<div class="article-category-tag">
-						<span class="material-symbols-rounded" style="font-size: 16px">category</span>
-						{post.category}
+						<SFIcon name="categories" size={14} />
+						<span>{post.category}</span>
 					</div>
 
 					<h1 class="article-title">{post.title}</h1>
@@ -222,21 +223,22 @@
 					</div>
 				</header>
 
-				<hr class="article-divider" />
+				<!-- Featured Image -->
+				{#if post.image && !post.image.endsWith('.svg')}
+					<div class="article-featured-image">
+						<img src={post.image} alt={post.imageAlt ?? post.title} class="lightboxable" />
+					</div>
+				{/if}
 
 				<!-- Content -->
-				<div class="prose" id="article-content">
+				<div class="article-body typography-body" id="article-content">
 					{@render children()}
 				</div>
 
 				<hr class="article-divider" />
 
-				<!-- Share Buttons -->
-				<div class="article-share">
-					<ShareButtons title={post.title} slug={post.slug} description={post.description} />
-				</div>
-
-				<hr class="article-divider" />
+				<!-- Share -->
+				<ShareButtons title={post.title} slug={post.slug} />
 
 				<!-- Author card -->
 				<AuthorCard />
@@ -246,7 +248,7 @@
 					<nav class="article-nav" aria-label="Article navigation">
 						{#if prevPost}
 							<a href={`/articles/${prevPost.slug}`} class="nav-article nav-prev">
-								<span class="material-symbols-rounded">arrow_back</span>
+								<SFIcon name="arrowRight" size={16} class="icon-flip" />
 								<div>
 									<span class="nav-label label-small">Previous</span>
 									<span class="nav-title">{prevPost.title}</span>
@@ -261,7 +263,7 @@
 									<span class="nav-label label-small">Next</span>
 									<span class="nav-title">{nextPost.title}</span>
 								</div>
-								<span class="material-symbols-rounded">arrow_forward</span>
+								<SFIcon name="arrowRight" size={16} />
 							</a>
 						{/if}
 					</nav>
@@ -336,12 +338,22 @@
 		grid-template-columns: 1fr 280px;
 		gap: var(--space-12);
 		align-items: start;
+		width: 100%;
+		max-width: 100%;
+		min-width: 0;
+	}
+
+	.article-main {
+		min-width: 0;
+		max-width: 100%;
+		overflow-x: hidden;
 	}
 
 	/* Responsive */
 	@media (max-width: 1024px) {
 		.article-layout {
 			grid-template-columns: 1fr;
+			gap: 0;
 		}
 
 		.article-sidebar {
@@ -355,11 +367,13 @@
 		}
 		
 		.article-title {
-			font-size: 36px;
+			font-size: clamp(1.65rem, 5vw, 2.25rem);
+			line-height: 1.25;
+			letter-spacing: -0.02em;
 		}
 
 		.article-nav {
-			flex-direction: column;
+			grid-template-columns: 1fr;
 		}
 
 		.nav-article {

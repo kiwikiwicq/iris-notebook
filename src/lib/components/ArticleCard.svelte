@@ -5,6 +5,7 @@
 	import Tag from './Tag.svelte';
 	import { bookmarksStore } from '$lib/stores/bookmarks.svelte';
 	import { onMount } from 'svelte';
+	import SFIcon from './SFIcon.svelte';
 
 	interface Props {
 		post: Post;
@@ -14,16 +15,12 @@
 
 	let { post, featured = false, index = 0 }: Props = $props();
 
-	// Generate a visually distinct gradient for cards without real images
+	// Apple SF subtle monochrome glass fallbacks
 	const gradients = [
-		'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-		'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-		'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-		'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-		'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-		'linear-gradient(135deg, #30cfd0 0%, #5b84b1 100%)',
-		'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
-		'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
+		'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)',
+		'linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%)',
+		'linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.06) 100%)',
+		'linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.02) 100%)'
 	];
 
 	const gradient = $derived(gradients[index % gradients.length]);
@@ -40,7 +37,7 @@
 	}
 </script>
 
-<article class="article-card" class:featured>
+<article class="article-card card" class:featured>
 	<a href={`/articles/${post.slug}`} class="card-link" aria-label={post.title}>
 		<!-- Thumbnail -->
 		<div class="card-image" style="background: {gradient}">
@@ -58,9 +55,7 @@
 					aria-label={bookmarked ? 'Remove bookmark' : 'Save article'}
 					title={bookmarked ? 'Remove bookmark' : 'Save article'}
 				>
-					<span class="material-symbols-rounded" style="font-variation-settings: 'FILL' {bookmarked ? 1 : 0}, 'wght' 400, 'GRAD' 0, 'opsz' 24">
-						bookmark
-					</span>
+					<SFIcon name={bookmarked ? 'bookmarked' : 'bookmark'} size={14} color="#ffffff" />
 				</button>
 			</div>
 		</div>
@@ -87,21 +82,26 @@
 
 <style>
 	.article-card {
-		background: var(--md-sys-color-surface-container-low);
+		background: var(--liquid-glass-bg);
+		backdrop-filter: var(--liquid-blur);
+		-webkit-backdrop-filter: var(--liquid-blur);
 		border-radius: var(--shape-card);
-		box-shadow: var(--card-shadow-resting);
+		box-shadow: var(--liquid-glass-shadow);
+		border: 1px solid var(--liquid-glass-border);
 		overflow: hidden;
 		display: flex;
 		flex-direction: column;
 		height: 100%;
 		transition:
 			transform var(--motion-duration-medium1) var(--motion-easing-standard),
-			box-shadow var(--motion-duration-medium1) var(--motion-easing-standard);
+			box-shadow var(--motion-duration-medium1) var(--motion-easing-standard),
+			border-color var(--motion-duration-medium1) var(--motion-easing-standard);
 	}
 
 	.article-card:hover {
-		transform: translateY(-6px);
+		transform: translateY(-3px) scale(1.008);
 		box-shadow: var(--card-shadow-hover);
+		border-color: rgba(255, 255, 255, 0.28);
 	}
 
 	.card-link {
@@ -116,12 +116,12 @@
 	/* Image area */
 	.card-image {
 		position: relative;
-		height: 200px;
+		height: 190px;
 		overflow: hidden;
 	}
 
 	.featured .card-image {
-		height: 240px;
+		height: 230px;
 	}
 
 	.article-thumbnail {
@@ -134,7 +134,7 @@
 	}
 
 	.article-card:hover .article-thumbnail {
-		transform: scale(1.05);
+		transform: scale(1.04);
 	}
 
 	.card-image-overlay {
@@ -143,8 +143,8 @@
 		display: flex;
 		align-items: flex-start;
 		justify-content: space-between;
-		padding: var(--space-4);
-		background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, transparent 40%);
+		padding: var(--space-3) var(--space-4);
+		background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 60%);
 	}
 
 	.category-badge {
@@ -152,31 +152,33 @@
 		align-items: center;
 		padding: 4px 12px;
 		border-radius: var(--md-sys-shape-corner-full);
-		background: rgba(255, 255, 255, 0.92);
-		color: var(--cat-color, #6750A4);
-		font-size: 12px;
+		background: rgba(0, 0, 0, 0.55);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		color: #ffffff;
+		font-size: 11px;
 		font-weight: 600;
-		letter-spacing: 0.5px;
-		backdrop-filter: blur(8px);
+		letter-spacing: -0.01em;
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
 	}
 
 	.bookmark-btn {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 34px;
-		height: 34px;
+		width: 32px;
+		height: 32px;
 		border-radius: var(--md-sys-shape-corner-full);
-		border: none;
-		background: rgba(255, 255, 255, 0.85);
-		color: var(--md-sys-color-on-surface-variant);
+		border: 1px solid rgba(255, 255, 255, 0.25);
+		background: rgba(0, 0, 0, 0.55);
+		color: #ffffff;
 		cursor: pointer;
-		backdrop-filter: blur(8px);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
 		transition:
 			background var(--motion-duration-short4) var(--motion-easing-standard),
-			color var(--motion-duration-short4) var(--motion-easing-standard),
 			transform var(--motion-duration-short4) var(--motion-easing-standard);
-		opacity: 0;
+		opacity: 0.85;
 	}
 
 	.article-card:hover .bookmark-btn,
@@ -184,42 +186,38 @@
 		opacity: 1;
 	}
 
-	.bookmark-btn.bookmarked {
-		background: var(--md-sys-color-primary);
-		color: var(--md-sys-color-on-primary);
-	}
-
 	.bookmark-btn:hover {
-		transform: scale(1.12);
-		background: var(--md-sys-color-primary-container);
-		color: var(--md-sys-color-on-primary-container);
+		transform: scale(1.08);
+		background: rgba(0, 0, 0, 0.75);
+		border-color: rgba(255, 255, 255, 0.4);
 	}
 
 	.bookmark-btn .material-symbols-rounded { font-size: 18px; }
 
 	/* Content area */
 	.card-content {
-		padding: var(--space-5) var(--space-5) var(--space-6);
+		padding: var(--space-5);
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-3);
+		gap: 10px;
 		flex: 1;
 	}
 
 	.card-meta {
 		display: flex;
 		align-items: center;
-		gap: var(--space-2);
+		gap: 6px;
+		font-size: 12px;
 		color: var(--md-sys-color-on-surface-variant);
 	}
 
-	.dot { opacity: 0.6; }
+	.dot { opacity: 0.5; }
 
 	.card-title {
 		font-size: 18px;
 		font-weight: 600;
-		line-height: 1.35;
-		letter-spacing: -0.2px;
+		line-height: 1.3;
+		letter-spacing: -0.015em;
 		color: var(--md-sys-color-on-surface);
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
@@ -229,12 +227,13 @@
 	}
 
 	.article-card:hover .card-title {
-		color: var(--md-sys-color-primary);
+		color: var(--apple-blue);
 	}
 
 	.card-desc {
 		font-size: 14px;
-		line-height: 1.6;
+		line-height: 1.5;
+		letter-spacing: -0.01em;
 		color: var(--md-sys-color-on-surface-variant);
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
@@ -246,8 +245,9 @@
 	.card-tags {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-2);
+		gap: 6px;
 		margin-top: auto;
+		padding-top: 4px;
 	}
 
 	.featured .card-title {

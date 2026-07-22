@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SFIcon from './SFIcon.svelte';
+
 	interface Heading {
 		id: string;
 		text: string;
@@ -30,28 +32,39 @@
 			}
 		);
 
-		const elements = headings.map((h) => document.getElementById(h.id)).filter(Boolean);
-		elements.forEach((el) => el && observer.observe(el));
+		headings.forEach((h) => {
+			const el = document.getElementById(h.id);
+			if (el) observer.observe(el);
+		});
 
 		return () => observer.disconnect();
 	});
 
 	function scrollTo(id: string) {
 		const el = document.getElementById(id);
-		if (!el) return;
-		const offset = 80;
-		const top = el.getBoundingClientRect().top + window.scrollY - offset;
-		window.scrollTo({ top, behavior: 'smooth' });
-		sheetOpen = false;
+		if (el) {
+			const offset = 80;
+			const bodyRect = document.body.getBoundingClientRect().top;
+			const elementRect = el.getBoundingClientRect().top;
+			const elementPosition = elementRect - bodyRect;
+			const offsetPosition = elementPosition - offset;
+
+			window.scrollTo({
+				top: offsetPosition,
+				behavior: 'smooth'
+			});
+			activeId = id;
+			sheetOpen = false;
+		}
 	}
 
 	function handleKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') sheetOpen = false;
 	}
 
-	// Active heading index for the FAB label
-	const activeIndex = $derived(headings.findIndex((h) => h.id === activeId));
-	const activeText = $derived(activeIndex >= 0 ? headings[activeIndex].text : 'Contents');
+	const activeText = $derived(
+		headings.find((h) => h.id === activeId)?.text ?? headings[0]?.text ?? 'Contents'
+	);
 </script>
 
 {#if headings.length > 0}
@@ -75,10 +88,10 @@
 	</nav>
 
 	<!-- Mobile: floating FAB -->
-	<button class="toc-fab" onclick={() => (sheetOpen = !sheetOpen)} aria-label="Table of contents" aria-expanded={sheetOpen}>
-		<span class="material-symbols-rounded">toc</span>
+	<button class="toc-fab liquid-glass" onclick={() => (sheetOpen = !sheetOpen)} aria-label="Table of contents" aria-expanded={sheetOpen}>
+		<SFIcon name="typography" size={16} />
 		<span class="fab-label">{activeText}</span>
-		<span class="material-symbols-rounded fab-chevron" class:open={sheetOpen}>expand_less</span>
+		<SFIcon name="arrowUp" size={14} class="fab-chevron {sheetOpen ? 'open' : ''}" />
 	</button>
 
 	<!-- Mobile: bottom sheet -->

@@ -3,6 +3,7 @@
 	import { getPublishedPosts } from '$lib/data/posts';
 	import ArticleCard from '$lib/components/ArticleCard.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+	import SFIcon from '$lib/components/SFIcon.svelte';
 
 	const allPosts = getPublishedPosts();
 
@@ -18,7 +19,7 @@
 </script>
 
 <svelte:head>
-	<title>Categories – Iris Notebook</title>
+	<title>Categories — Iris Notebook</title>
 	<meta name="description" content="Browse Iris Notebook articles by category: Android, Linux, Programming, AI, and Notes." />
 </svelte:head>
 
@@ -28,33 +29,31 @@
 
 		<header class="page-header">
 			<h1 class="display-small">Categories</h1>
-			<p class="body-large page-subtitle">Browse articles by topic.</p>
+			<p class="body-large page-subtitle">Browse technical notes grouped by platform and domain focus.</p>
 		</header>
 
 		<!-- Category cards -->
 		<div class="category-grid">
 			{#each categories as category, i}
 				<button
-					class="cat-card"
+					class="cat-card liquid-glass"
 					class:active={activeCategory === category.slug}
 					id={category.slug}
 					onclick={() => {
 						activeCategory = activeCategory === category.slug ? null : category.slug;
 					}}
-					style="--delay: {i * 60}ms; --cat-color: {category.color};"
+					style="--delay: {i * 60}ms;"
 					aria-expanded={activeCategory === category.slug}
 					aria-controls="category-posts-{category.slug}"
 				>
 					<div class="cat-card-icon">
-						<span class="material-symbols-rounded icon-filled icon-lg">{category.icon}</span>
+						<SFIcon name={category.sfIcon ?? 'code'} size={20} />
 					</div>
 					<h2 class="cat-card-name title-large">{category.name}</h2>
 					<p class="cat-card-desc body-medium">{category.description}</p>
 					<div class="cat-card-footer">
 						<span class="post-count label-large">{getPostCount(category.slug)} articles</span>
-						<span class="material-symbols-rounded arrow">
-							{activeCategory === category.slug ? 'expand_less' : 'expand_more'}
-						</span>
+						<SFIcon name={activeCategory === category.slug ? 'arrowUp' : 'arrowRight'} size={14} />
 					</div>
 				</button>
 			{/each}
@@ -69,13 +68,13 @@
 				aria-label="{activeCat?.name} articles"
 			>
 				<div class="category-posts-header">
-					<div class="cat-badge" style="--cat-color: {activeCat?.color};">
-						<span class="material-symbols-rounded icon-filled">{activeCat?.icon}</span>
+					<div class="cat-badge liquid-glass">
+						<SFIcon name={activeCat?.sfIcon ?? 'code'} size={18} />
 						<h2 class="title-large">{activeCat?.name}</h2>
 					</div>
 					<a href="/articles?category={activeCategory}" class="view-all-link">
-						View all
-						<span class="material-symbols-rounded">arrow_forward</span>
+						<span>View all</span>
+						<SFIcon name="arrowRight" size={14} />
 					</a>
 				</div>
 				<div class="posts-grid">
@@ -109,7 +108,7 @@
 	/* Category cards */
 	.category-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 		gap: var(--space-5);
 		margin-bottom: var(--space-10);
 	}
@@ -119,73 +118,73 @@
 		flex-direction: column;
 		gap: var(--space-3);
 		padding: var(--space-6);
-		background: var(--md-sys-color-surface-container-low);
-		border-radius: var(--shape-card);
-		border: 2px solid var(--md-sys-color-outline-variant);
+		border-radius: 24px;
 		text-align: left;
 		cursor: pointer;
 		font-family: var(--font-body);
+		color: var(--md-sys-color-on-surface);
 		transition:
-			background var(--motion-duration-medium1) var(--motion-easing-standard),
-			border-color var(--motion-duration-medium1) var(--motion-easing-standard),
-			transform var(--motion-duration-medium1) var(--motion-easing-standard),
-			box-shadow var(--motion-duration-medium1) var(--motion-easing-standard);
-		animation: slide-up var(--motion-duration-medium3) var(--motion-easing-emphasized-decelerate) var(--delay, 0ms) both;
+			background 0.25s ease,
+			border-color 0.25s ease,
+			transform 0.25s var(--motion-easing-standard),
+			box-shadow 0.25s ease;
 	}
 
 	.cat-card:hover {
-		border-color: var(--cat-color);
-		background: color-mix(in srgb, var(--cat-color) 8%, transparent);
-		transform: translateY(-4px);
-		box-shadow: 0 8px 24px color-mix(in srgb, var(--cat-color) 15%, transparent);
+		background: rgba(140, 140, 145, 0.16);
+		border-color: rgba(255, 255, 255, 0.3);
+		transform: translateY(-2px);
+		box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
 	}
 
 	.cat-card.active {
-		border-color: var(--cat-color);
-		background: color-mix(in srgb, var(--cat-color) 12%, transparent);
-		box-shadow: 0 4px 16px color-mix(in srgb, var(--cat-color) 20%, transparent);
+		background: rgba(140, 140, 145, 0.22);
+		border-color: rgba(140, 140, 145, 0.4);
+		box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 12px 36px rgba(0, 0, 0, 0.2);
 	}
 
 	.cat-card-icon {
-		width: 56px;
-		height: 56px;
-		border-radius: var(--md-sys-shape-corner-extra-large);
-		background: color-mix(in srgb, var(--cat-color) 15%, transparent);
-		color: var(--cat-color);
+		width: 48px;
+		height: 48px;
+		border-radius: 14px;
+		background: rgba(140, 140, 145, 0.14);
+		border: 1px solid var(--glass-border);
+		color: var(--md-sys-color-on-surface);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		transition: transform 0.2s ease;
+	}
+
+	.cat-card:hover .cat-card-icon {
+		transform: scale(1.08);
 	}
 
 	.cat-card-name {
-		color: var(--md-sys-color-on-surface);
+		font-size: 19px;
+		font-weight: 600;
 	}
 
 	.cat-card-desc {
 		color: var(--md-sys-color-on-surface-variant);
 		flex: 1;
+		line-height: 1.5;
 	}
 
 	.cat-card-footer {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-top: auto;
 		padding-top: var(--space-3);
-		border-top: 1px solid var(--md-sys-color-outline-variant);
-	}
-
-	.post-count {
-		color: var(--cat-color, var(--md-sys-color-primary));
-	}
-
-	.arrow {
+		border-top: 1px solid var(--glass-border);
 		color: var(--md-sys-color-on-surface-variant);
 	}
 
-	/* Posts section */
+	/* Expanded posts section */
 	.category-posts-section {
-		padding-block: var(--space-8);
+		margin-top: var(--space-8);
+		padding-top: var(--space-8);
+		border-top: 1px solid var(--glass-border);
 	}
 
 	.category-posts-header {
@@ -193,37 +192,35 @@
 		align-items: center;
 		justify-content: space-between;
 		margin-bottom: var(--space-6);
-		flex-wrap: wrap;
-		gap: var(--space-4);
 	}
 
 	.cat-badge {
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-3);
-		color: var(--cat-color);
+		padding: 8px 18px;
+		border-radius: var(--md-sys-shape-corner-full);
+		color: var(--md-sys-color-on-surface);
 	}
-
-	.cat-badge .material-symbols-rounded { font-size: 24px; }
 
 	.view-all-link {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--space-1);
+		gap: var(--space-2);
 		font-size: 14px;
 		font-weight: 500;
-		color: var(--md-sys-color-primary);
+		color: var(--md-sys-color-on-surface);
 		text-decoration: none;
-		transition: gap var(--motion-duration-short4) var(--motion-easing-standard);
+		transition: opacity 0.2s ease;
 	}
 
 	.view-all-link:hover {
-		gap: var(--space-2);
+		opacity: 0.8;
 	}
 
 	.posts-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-		gap: var(--space-5);
+		gap: var(--space-6);
 	}
 </style>

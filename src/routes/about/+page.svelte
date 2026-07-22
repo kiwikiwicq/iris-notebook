@@ -2,6 +2,7 @@
 	import AuthorCard from '$lib/components/AuthorCard.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import Tag from '$lib/components/Tag.svelte';
+	import SFIcon from '$lib/components/SFIcon.svelte';
 	import { categories } from '$lib/data/categories';
 	import { getPublishedPosts } from '$lib/data/posts';
 
@@ -12,7 +13,7 @@
 		{ group: 'Android', items: ['Jetpack Compose', 'Material Design 3', 'Coroutines', 'Room', 'Hilt'] },
 		{ group: 'Linux', items: ['Arch Linux', 'Hyprland', 'Neovim', 'Fish', 'systemd', 'Docker'] },
 		{ group: 'Web', items: ['SvelteKit', 'TypeScript', 'CSS', 'Vite', 'Node.js'] },
-		{ group: 'AI/ML', items: ['Ollama', 'LangChain', 'HuggingFace', 'PyTorch (basics)'] }
+		{ group: 'AI/ML', items: ['Ollama', 'LangChain', 'HuggingFace', 'PyTorch'] }
 	];
 
 	const timeline = [
@@ -26,7 +27,7 @@
 		{
 			year: '2025',
 			items: [
-				'Contributed to several open source projects',
+				'Contributed to open source software tools',
 				'Started deep dive into local LLMs',
 				'Moved daily driver to Hyprland on Arch'
 			]
@@ -34,25 +35,17 @@
 		{
 			year: '2024',
 			items: [
-				'Started writing about Android development',
-				'Released first Jetpack Compose component library',
+				'Started technical notes on Android runtime',
+				'Released Jetpack Compose component libraries',
 				'Learned Rust'
-			]
-		},
-		{
-			year: '2023',
-			items: [
-				'Started the dotfiles repository',
-				'First experiments with SvelteKit',
-				'Switched from Ubuntu to Arch Linux'
 			]
 		}
 	];
 </script>
 
 <svelte:head>
-	<title>About – Iris Notebook</title>
-	<meta name="description" content="About Iris — developer, tinkerer, and writer. Programming, Android, Linux, AI." />
+	<title>About — Iris Notebook</title>
+	<meta name="description" content="About Iris — software developer, tinkerer, and engineer. Notes on Swift, Kotlin, Linux, and AI system design." />
 </svelte:head>
 
 <main class="about-page" id="main-content">
@@ -64,7 +57,6 @@
 			<div class="hero-content">
 				<div class="hero-avatar" aria-hidden="true">
 					<span class="avatar-letter">I</span>
-					<div class="avatar-ring"></div>
 				</div>
 				<div class="hero-text">
 					<p class="hello label-medium">Hello, I'm</p>
@@ -73,20 +65,16 @@
 						Developer · Tinkerer · Lifelong Learner
 					</p>
 					<p class="about-bio body-large">
-						I'm a software developer with a deep love for beautiful software, elegant systems, and the
-						craft of writing code. I spend most of my time building Android apps, tweaking my Linux
-						desktop, and exploring what's possible with AI — then writing about it here.
+						I'm a software engineer with a passion for high-performance software, elegant design systems, and deep engineering craft. I spend most of my time building mobile apps, tweaking Linux desktops, and exploring AI systems — writing notes from practice.
 					</p>
 					<div class="about-actions">
 						<a href="/articles" class="btn-filled">
-							<span class="material-symbols-rounded">article</span>
-							Read my writing
+							<SFIcon name="articles" size={16} color="var(--md-sys-color-surface)" />
+							<span>Read Writing</span>
 						</a>
 						<a href="https://github.com/kiwikiwicq" class="btn-outlined" target="_blank" rel="noopener noreferrer">
-							<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-								<path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-							</svg>
-							GitHub
+							<SFIcon name="github" size={16} />
+							<span>GitHub</span>
 						</a>
 					</div>
 				</div>
@@ -94,7 +82,7 @@
 		</section>
 
 		<!-- Quick stats -->
-		<div class="quick-stats animate-slide-up">
+		<div class="quick-stats liquid-glass">
 			<div class="qstat">
 				<span class="qstat-num">{posts.length}+</span>
 				<span class="qstat-label">Articles written</span>
@@ -102,12 +90,12 @@
 			<div class="qstat-div"></div>
 			<div class="qstat">
 				<span class="qstat-num">{categories.length}</span>
-				<span class="qstat-label">Topics covered</span>
+				<span class="qstat-label">Core topics</span>
 			</div>
 			<div class="qstat-div"></div>
 			<div class="qstat">
 				<span class="qstat-num">3+</span>
-				<span class="qstat-label">Years writing</span>
+				<span class="qstat-label">Years engineering</span>
 			</div>
 			<div class="qstat-div"></div>
 			<div class="qstat">
@@ -121,9 +109,9 @@
 			<h2 class="headline-medium section-title" id="writing-heading">What I write about</h2>
 			<div class="topics-grid">
 				{#each categories as cat}
-					<a href="/articles?category={cat.slug}" class="topic-card" style="--cat-color: {cat.color}; --cat-bg: {cat.colorContainer}">
+					<a href="/articles?category={cat.slug}" class="topic-card liquid-glass">
 						<div class="topic-icon">
-							<span class="material-symbols-rounded icon-filled">{cat.icon}</span>
+							<SFIcon name="code" size={18} />
 						</div>
 						<div>
 							<h3 class="title-medium">{cat.name}</h3>
@@ -136,10 +124,10 @@
 
 		<!-- Skills -->
 		<section class="about-section" aria-labelledby="skills-heading">
-			<h2 class="headline-medium section-title" id="skills-heading">Skills & Tools</h2>
+			<h2 class="headline-medium section-title" id="skills-heading">Skills &amp; Tools</h2>
 			<div class="skills-grid">
 				{#each skills as skillGroup}
-					<div class="skill-group">
+					<div class="skill-group liquid-glass">
 						<h3 class="title-small skill-group-name">{skillGroup.group}</h3>
 						<div class="skill-tags">
 							{#each skillGroup.items as skill}
@@ -158,12 +146,12 @@
 				{#each timeline as period, i}
 					<div class="timeline-period" style="--delay: {i * 80}ms">
 						<div class="timeline-year">
-							<span class="year-badge">{period.year}</span>
+							<span class="year-badge liquid-glass">{period.year}</span>
 						</div>
 						<div class="timeline-events">
 							{#each period.items as item}
 								<div class="timeline-event">
-									<span class="material-symbols-rounded event-dot">fiber_manual_record</span>
+									<SFIcon name="check" size={14} color="var(--apple-green)" />
 									<span class="body-medium">{item}</span>
 								</div>
 							{/each}
@@ -188,125 +176,114 @@
 		min-height: 100vh;
 	}
 
-	/* Hero */
 	.about-hero {
-		padding-block: var(--space-12);
+		margin-block: var(--space-6) var(--space-10);
 	}
 
 	.hero-content {
 		display: flex;
-		gap: var(--space-10);
-		align-items: center;
-		flex-wrap: wrap;
+		align-items: flex-start;
+		gap: var(--space-8);
+	}
+
+	@media (max-width: 640px) {
+		.hero-content { flex-direction: column; }
 	}
 
 	.hero-avatar {
-		position: relative;
-		width: 140px;
-		height: 140px;
+		width: 84px;
+		height: 84px;
+		border-radius: var(--md-sys-shape-corner-full);
+		background: rgba(140, 140, 145, 0.16);
+		border: 1px solid var(--glass-border);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		flex-shrink: 0;
 	}
 
 	.avatar-letter {
-		position: absolute;
-		inset: 8px;
-		background: linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-tertiary));
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 56px;
-		font-weight: 300;
-		color: white;
-	}
-
-	.avatar-ring {
-		position: absolute;
-		inset: 0;
-		border-radius: 50%;
-		border: 3px solid transparent;
-		background: linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-tertiary)) border-box;
-		-webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-		-webkit-mask-composite: destination-out;
-		mask-composite: exclude;
-		animation: spin 8s linear infinite;
+		font-size: 36px;
+		font-weight: 700;
+		color: var(--md-sys-color-on-surface);
+		font-family: var(--font-display);
 	}
 
 	.hero-text {
-		flex: 1;
-		min-width: 280px;
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-4);
+		gap: var(--space-3);
 	}
 
 	.hello {
-		color: var(--md-sys-color-primary);
+		color: var(--md-sys-color-on-surface-variant);
 		text-transform: uppercase;
-		letter-spacing: 1px;
-		max-width: none;
+		letter-spacing: 0.05em;
+		font-size: 12px;
 	}
 
 	.about-tagline {
-		color: var(--md-sys-color-on-surface-variant);
+		color: var(--md-sys-color-on-surface);
+		font-weight: 600;
 	}
 
 	.about-bio {
 		color: var(--md-sys-color-on-surface-variant);
-		line-height: 1.7;
-		max-width: 60ch;
+		max-width: 64ch;
+		line-height: 1.6;
 	}
 
 	.about-actions {
 		display: flex;
 		gap: var(--space-3);
+		margin-top: var(--space-2);
 		flex-wrap: wrap;
 	}
 
 	.btn-filled {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--space-2);
-		padding: 12px 24px;
-		border-radius: var(--shape-button);
-		background: var(--md-sys-color-primary);
-		color: var(--md-sys-color-on-primary);
+		gap: 8px;
+		padding: 11px 22px;
+		border-radius: var(--md-sys-shape-corner-full);
+		background: var(--md-sys-color-on-surface);
+		color: var(--md-sys-color-surface);
 		font-size: 14px;
 		font-weight: 600;
 		text-decoration: none;
-		transition: transform var(--motion-duration-short4) var(--motion-easing-standard);
+		transition: transform 0.25s var(--motion-easing-standard), opacity 0.2s ease;
 	}
 
-	.btn-filled:hover { transform: translateY(-2px); color: var(--md-sys-color-on-primary); }
+	.btn-filled:hover { transform: translateY(-1px); opacity: 0.92; }
 
 	.btn-outlined {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--space-2);
-		padding: 12px 24px;
-		border-radius: var(--shape-button);
-		border: 1.5px solid var(--md-sys-color-outline);
+		gap: 8px;
+		padding: 11px 22px;
+		border-radius: var(--md-sys-shape-corner-full);
+		border: 1px solid var(--glass-border);
+		background: rgba(140, 140, 145, 0.08);
 		color: var(--md-sys-color-on-surface);
 		font-size: 14px;
 		font-weight: 500;
 		text-decoration: none;
-		transition: background var(--motion-duration-short4) var(--motion-easing-standard);
+		transition: background 0.2s ease, border-color 0.2s ease;
 	}
 
 	.btn-outlined:hover {
-		background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
-		color: var(--md-sys-color-on-surface);
+		background: rgba(140, 140, 145, 0.16);
+		border-color: rgba(255, 255, 255, 0.25);
 	}
 
 	/* Quick stats */
 	.quick-stats {
 		display: flex;
 		align-items: center;
-		gap: var(--space-6);
+		gap: var(--space-8);
 		padding: var(--space-6) var(--space-8);
-		background: var(--md-sys-color-primary-container);
-		border-radius: var(--shape-card);
-		margin-bottom: var(--space-10);
+		border-radius: 20px;
+		margin-bottom: var(--space-12);
 		flex-wrap: wrap;
 		justify-content: center;
 	}
@@ -319,29 +296,27 @@
 	}
 
 	.qstat-num {
-		font-size: 36px;
+		font-size: 32px;
 		font-weight: 700;
-		color: var(--md-sys-color-on-primary-container);
-		letter-spacing: -1px;
+		color: var(--md-sys-color-on-surface);
+		letter-spacing: -0.02em;
 		line-height: 1;
 	}
 
 	.qstat-label {
 		font-size: 13px;
-		color: var(--md-sys-color-on-primary-container);
-		opacity: 0.8;
+		color: var(--md-sys-color-on-surface-variant);
 	}
 
 	.qstat-div {
 		width: 1px;
-		height: 48px;
-		background: var(--md-sys-color-on-primary-container);
-		opacity: 0.2;
+		height: 36px;
+		background: var(--glass-border);
 	}
 
 	/* About sections */
 	.about-section {
-		margin-bottom: var(--space-16);
+		margin-bottom: var(--space-12);
 	}
 
 	.section-title {
@@ -360,31 +335,28 @@
 		display: flex;
 		gap: var(--space-4);
 		padding: var(--space-5);
-		background: var(--md-sys-color-surface-container-low);
-		border-radius: var(--md-sys-shape-corner-extra-large);
-		border: 1px solid var(--md-sys-color-outline-variant);
+		border-radius: 20px;
 		text-decoration: none;
 		color: var(--md-sys-color-on-surface);
 		align-items: center;
 		transition:
-			background var(--motion-duration-short4) var(--motion-easing-standard),
-			border-color var(--motion-duration-short4) var(--motion-easing-standard),
-			transform var(--motion-duration-medium1) var(--motion-easing-standard);
+			background 0.2s ease,
+			border-color 0.2s ease,
+			transform 0.25s var(--motion-easing-standard);
 	}
 
 	.topic-card:hover {
-		background: var(--cat-bg);
-		border-color: var(--cat-color);
-		transform: translateY(-3px);
-		color: var(--md-sys-color-on-surface);
+		background: rgba(140, 140, 145, 0.16);
+		border-color: rgba(255, 255, 255, 0.28);
+		transform: translateY(-2px);
 	}
 
 	.topic-icon {
-		width: 44px;
-		height: 44px;
-		border-radius: var(--md-sys-shape-corner-large);
-		background: var(--cat-bg, var(--md-sys-color-primary-container));
-		color: var(--cat-color, var(--md-sys-color-primary));
+		width: 42px;
+		height: 42px;
+		border-radius: 12px;
+		background: rgba(140, 140, 145, 0.12);
+		color: var(--md-sys-color-on-surface);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -399,26 +371,27 @@
 	/* Skills */
 	.skills-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-		gap: var(--space-6);
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: var(--space-4);
 	}
 
 	.skill-group {
+		padding: var(--space-5);
+		border-radius: 20px;
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-3);
 	}
 
 	.skill-group-name {
-		color: var(--md-sys-color-on-surface-variant);
-		text-transform: uppercase;
-		letter-spacing: 0.8px;
+		color: var(--md-sys-color-on-surface);
+		font-weight: 600;
 	}
 
 	.skill-tags {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-2);
+		gap: 6px;
 	}
 
 	/* Timeline */
@@ -429,41 +402,36 @@
 	}
 
 	.timeline-period {
-		display: grid;
-		grid-template-columns: 80px 1fr;
+		display: flex;
 		gap: var(--space-6);
-		align-items: start;
-		animation: slide-right var(--motion-duration-medium3) var(--motion-easing-emphasized-decelerate) var(--delay, 0ms) both;
+		align-items: flex-start;
+	}
+
+	@media (max-width: 480px) {
+		.timeline-period { flex-direction: column; gap: var(--space-2); }
 	}
 
 	.year-badge {
 		display: inline-flex;
-		padding: 6px 12px;
+		align-items: center;
+		padding: 4px 14px;
 		border-radius: var(--md-sys-shape-corner-full);
-		background: var(--md-sys-color-primary-container);
-		color: var(--md-sys-color-on-primary-container);
 		font-size: 13px;
 		font-weight: 700;
-		letter-spacing: 0.5px;
+		color: var(--md-sys-color-on-surface);
 	}
 
 	.timeline-events {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-3);
-		padding-top: 6px;
+		gap: var(--space-2);
+		flex: 1;
 	}
 
 	.timeline-event {
 		display: flex;
 		align-items: center;
-		gap: var(--space-3);
-		color: var(--md-sys-color-on-surface);
-	}
-
-	.event-dot {
-		font-size: 10px !important;
-		color: var(--md-sys-color-primary);
-		flex-shrink: 0;
+		gap: 10px;
+		color: var(--md-sys-color-on-surface-variant);
 	}
 </style>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import SFIcon from './SFIcon.svelte';
 
 	interface Props {
 		/** CSS selector for the container whose images should be clickable */
@@ -18,46 +19,49 @@
 		lightboxAlt = alt;
 		isOpen = true;
 		zoomed = false;
-		document.body.style.overflow = 'hidden';
+		if (typeof document !== 'undefined') {
+			document.body.style.overflow = 'hidden';
+		}
 	}
 
 	function closeLightbox() {
 		isOpen = false;
 		zoomed = false;
-		document.body.style.overflow = '';
+		if (typeof document !== 'undefined') {
+			document.body.style.overflow = '';
+		}
 	}
 
 	function handleKeydown(e: KeyboardEvent) {
+		if (!isOpen) return;
 		if (e.key === 'Escape') closeLightbox();
 	}
 
 	function handleOverlayClick(e: MouseEvent) {
-		if ((e.target as Element)?.classList.contains('lightbox-overlay')) closeLightbox();
+		if (e.target === e.currentTarget) closeLightbox();
 	}
 
 	onMount(() => {
 		const container = document.querySelector(selector);
 		if (!container) return;
 
-		// Add click handlers to all images inside the selector
-		const imgs = container.querySelectorAll<HTMLImageElement>('img');
-		imgs.forEach((img) => {
-			img.style.cursor = 'zoom-in';
-			img.addEventListener('click', () => openLightbox(img.src, img.alt));
+		const images = container.querySelectorAll('img:not(.no-lightbox)');
+
+		const handleClick = (e: Event) => {
+			const img = e.currentTarget as HTMLImageElement;
+			openLightbox(img.src, img.alt);
+		};
+
+		images.forEach((img) => {
+			(img as HTMLElement).style.cursor = 'zoom-in';
+			img.addEventListener('click', handleClick);
 		});
 
-		// Observe for dynamically added images (MutationObserver)
-		const observer = new MutationObserver(() => {
-			const newImgs = container.querySelectorAll<HTMLImageElement>('img:not([data-lb])');
-			newImgs.forEach((img) => {
-				img.setAttribute('data-lb', '1');
-				img.style.cursor = 'zoom-in';
-				img.addEventListener('click', () => openLightbox(img.src, img.alt));
+		return () => {
+			images.forEach((img) => {
+				img.removeEventListener('click', handleClick);
 			});
-		});
-		observer.observe(container, { childList: true, subtree: true });
-
-		return () => observer.disconnect();
+		};
 	});
 </script>
 
@@ -75,17 +79,17 @@
 		tabindex="-1"
 	>
 		<!-- Close button -->
-		<button class="lightbox-close" onclick={closeLightbox} aria-label="Close preview">
-			<span class="material-symbols-rounded">close</span>
+		<button class="lightbox-close liquid-glass" onclick={closeLightbox} aria-label="Close preview">
+			<SFIcon name="close" size={16} />
 		</button>
 
 		<!-- Zoom toggle -->
 		<button
-			class="lightbox-zoom"
+			class="lightbox-zoom liquid-glass"
 			onclick={() => (zoomed = !zoomed)}
 			aria-label={zoomed ? 'Zoom out' : 'Zoom in'}
 		>
-			<span class="material-symbols-rounded">{zoomed ? 'zoom_out' : 'zoom_in'}</span>
+			<SFIcon name="search" size={16} />
 		</button>
 
 		<!-- Image -->

@@ -1,71 +1,92 @@
 /* ============================================================
- * Material Design 3 – CSS Design Tokens
+ * Apple Developer & Human Interface Guidelines (HIG) – Design Tokens
  * ============================================================ */
 
 :root {
-  /* ── Color Roles (Light scheme) ── */
-  --md-sys-color-primary: #6750A4;
-  --md-sys-color-on-primary: #FFFFFF;
-  --md-sys-color-primary-container: #EADDFF;
-  --md-sys-color-on-primary-container: #21005D;
-  --md-sys-color-secondary: #625B71;
-  --md-sys-color-on-secondary: #FFFFFF;
-  --md-sys-color-secondary-container: #E8DEF8;
-  --md-sys-color-on-secondary-container: #1D192B;
-  --md-sys-color-tertiary: #7D5260;
-  --md-sys-color-on-tertiary: #FFFFFF;
-  --md-sys-color-tertiary-container: #FFD8E4;
-  --md-sys-color-on-tertiary-container: #31111D;
-  --md-sys-color-error: #B3261E;
-  --md-sys-color-on-error: #FFFFFF;
-  --md-sys-color-error-container: #F9DEDC;
-  --md-sys-color-on-error-container: #410E0B;
-  --md-sys-color-outline: #79747E;
-  --md-sys-color-outline-variant: #CAC4D0;
-  --md-sys-color-background: #FFFBFE;
-  --md-sys-color-on-background: #1C1B1F;
-  --md-sys-color-surface: #FFFBFE;
-  --md-sys-color-on-surface: #1C1B1F;
-  --md-sys-color-surface-variant: #E7E0EC;
-  --md-sys-color-on-surface-variant: #49454F;
-  --md-sys-color-surface-container-lowest: #FFFFFF;
-  --md-sys-color-surface-container-low: #F7F2FA;
-  --md-sys-color-surface-container: #F3EDF7;
-  --md-sys-color-surface-container-high: #ECE6F0;
-  --md-sys-color-surface-container-highest: #E6E0E9;
-  --md-sys-color-inverse-surface: #313033;
-  --md-sys-color-inverse-on-surface: #F4EFF4;
-  --md-sys-color-inverse-primary: #D0BCFF;
-  --md-sys-color-shadow: #000000;
-  --md-sys-color-scrim: #000000;
+  /* ── Apple System Palette (Light Monochrome) ── */
+  --apple-blue: #1D1D1F;
+  --apple-blue-hover: #000000;
+  --apple-indigo: #515154;
+  --apple-purple: #86868B;
+  --apple-pink: #1D1D1F;
+  --apple-red: #FF3B30;
+  --apple-orange: #FF9500;
+  --apple-yellow: #FFCC00;
+  --apple-green: #34C759;
+  --apple-teal: #30B0C7;
+  --apple-cyan: #1D1D1F;
 
-  /* ── Elevation shadows ── */
-  --md-sys-elevation-1: 0px 1px 2px rgba(0,0,0,0.3), 0px 1px 3px 1px rgba(0,0,0,0.15);
-  --md-sys-elevation-2: 0px 1px 2px rgba(0,0,0,0.3), 0px 2px 6px 2px rgba(0,0,0,0.15);
-  --md-sys-elevation-3: 0px 1px 3px rgba(0,0,0,0.3), 0px 4px 8px 3px rgba(0,0,0,0.15);
-  --md-sys-elevation-4: 0px 2px 3px rgba(0,0,0,0.3), 0px 6px 10px 4px rgba(0,0,0,0.15);
-  --md-sys-elevation-5: 0px 4px 4px rgba(0,0,0,0.3), 0px 8px 12px 6px rgba(0,0,0,0.15);
+  /* ── Legacy / Theme Aliases ── */
+  --md-sys-color-primary: #1D1D1F;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #E8E8ED;
+  --md-sys-color-on-primary-container: #1D1D1F;
+
+  --md-sys-color-secondary: #515154;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #F2F2F7;
+  --md-sys-color-on-secondary-container: #1D1D1F;
+
+  --md-sys-color-tertiary: #86868B;
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-tertiary-container: #F5F5F7;
+  --md-sys-color-on-tertiary-container: #1D1D1F;
+
+  --md-sys-color-error: #FF3B30;
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-error-container: #FFE5E3;
+  --md-sys-color-on-error-container: #600000;
+
+  --md-sys-color-outline: #86868B;
+  --md-sys-color-outline-variant: #D2D2D7;
+
+  /* ── Backgrounds & Surfaces (Apple Light Mode) ── */
+  --md-sys-color-background: #F5F5F7;
+  --md-sys-color-on-background: #1D1D1F;
+  --md-sys-color-surface: #FFFFFF;
+  --md-sys-color-on-surface: #1D1D1F;
+  --md-sys-color-surface-variant: #E8E8ED;
+  --md-sys-color-on-surface-variant: #515154;
+
+  --md-sys-color-surface-container-lowest: #FFFFFF;
+  --md-sys-color-surface-container-low: #FFFFFF;
+  --md-sys-color-surface-container: #F2F2F7;
+  --md-sys-color-surface-container-high: #E5E5EA;
+  --md-sys-color-surface-container-highest: #D1D1D6;
+
+  --md-sys-color-inverse-surface: #1D1D1F;
+  --md-sys-color-inverse-on-surface: #F5F5F7;
+  --md-sys-color-inverse-primary: #FFFFFF;
+  --md-sys-color-shadow: rgba(0, 0, 0, 0.12);
+  --md-sys-color-scrim: rgba(0, 0, 0, 0.4);
+
+  /* ── Apple Elevation Shadows ── */
+  --md-sys-elevation-1: 0 2px 8px rgba(0, 0, 0, 0.04), 0 0 1px rgba(0, 0, 0, 0.08);
+  --md-sys-elevation-2: 0 4px 16px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.1);
+  --md-sys-elevation-3: 0 12px 32px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --md-sys-elevation-4: 0 20px 48px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+  --md-sys-elevation-5: 0 32px 64px rgba(0, 0, 0, 0.16), 0 8px 24px rgba(0, 0, 0, 0.08);
 
   /* Card shadow variants */
-  --card-shadow-resting: 0 2px 8px rgba(103, 80, 164, 0.08), 0 0 2px rgba(0,0,0,0.04);
-  --card-shadow-hover: 0 8px 24px rgba(103, 80, 164, 0.14), 0 2px 8px rgba(0,0,0,0.06);
+  --card-shadow-resting: 0 4px 20px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  --card-shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.2);
 
-  /* ── Shape tokens ── */
+  /* ── Apple Squircle & Shape tokens ── */
   --md-sys-shape-corner-none: 0px;
-  --md-sys-shape-corner-extra-small: 4px;
-  --md-sys-shape-corner-small: 8px;
-  --md-sys-shape-corner-medium: 12px;
-  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-small: 6px;
+  --md-sys-shape-corner-small: 10px;
+  --md-sys-shape-corner-medium: 14px;
+  --md-sys-shape-corner-large: 20px;
   --md-sys-shape-corner-extra-large: 28px;
   --md-sys-shape-corner-full: 9999px;
 
   /* App-level shape aliases */
-  --shape-card: 24px;
-  --shape-chip: 8px;
-  --shape-button: 20px;
-  --shape-fab: 16px;
-  --shape-dialog: 28px;
-  --shape-search: 28px;
+  --shape-card: 20px;
+  --shape-chip: 9999px;
+  --shape-button: 9999px;
+  --shape-fab: 9999px;
+  --shape-dialog: 24px;
+  --shape-search: 16px;
 
   /* ── Spacing scale ── */
   --space-1: 4px;
@@ -84,74 +105,105 @@
 
   /* ── Layout ── */
   --max-width: 1200px;
-  --nav-height: 64px;
-  --content-width: 720px;
+  --nav-height: 56px;
+  --content-width: 760px;
 
-  /* ── Transition tokens ── */
-  --motion-duration-short1: 50ms;
-  --motion-duration-short2: 100ms;
-  --motion-duration-short3: 150ms;
-  --motion-duration-short4: 200ms;
-  --motion-duration-medium1: 250ms;
-  --motion-duration-medium2: 300ms;
-  --motion-duration-medium3: 350ms;
-  --motion-duration-medium4: 400ms;
-  --motion-duration-long1: 450ms;
-  --motion-duration-long2: 500ms;
-  --motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
-  --motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
-  --motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
-  --motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
-  --motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  /* ── Transition tokens (Apple fluid springs) ── */
+  --motion-duration-short1: 60ms;
+  --motion-duration-short2: 120ms;
+  --motion-duration-short3: 180ms;
+  --motion-duration-short4: 240ms;
+  --motion-duration-medium1: 300ms;
+  --motion-duration-medium2: 360ms;
+  --motion-duration-medium3: 420ms;
+  --motion-duration-medium4: 480ms;
+  --motion-duration-long1: 540ms;
+  --motion-duration-long2: 600ms;
+  --motion-easing-standard: cubic-bezier(0.25, 1, 0.5, 1);
+  --motion-easing-standard-decelerate: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-easing-standard-accelerate: cubic-bezier(0.7, 0, 0.84, 0);
+  --motion-easing-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.9, 0.1, 1);
   --motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
 
   /* ── State layers ── */
-  --state-hover-opacity: 0.08;
-  --state-pressed-opacity: 0.12;
-  --state-focused-opacity: 0.12;
-  --state-dragged-opacity: 0.16;
+  --state-hover-opacity: 0.06;
+  --state-pressed-opacity: 0.1;
+  --state-focused-opacity: 0.1;
+  --state-dragged-opacity: 0.14;
 
-  /* ── Misc ── */
+  /* ── Misc & Liquid Glass ── */
   --scrollbar-width: 8px;
-  --appbar-bg: rgba(255, 251, 254, 0.85);
+  --appbar-bg: rgba(245, 245, 247, 0.72);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --liquid-glass-bg: rgba(255, 255, 255, 0.72);
+  --liquid-glass-border: rgba(255, 255, 255, 0.6);
+  --liquid-glass-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8), 0 8px 32px rgba(0, 0, 0, 0.06);
+  --liquid-blur: blur(30px) saturate(210%);
 }
 
-/* ── Dark Mode Color Roles ── */
+/* ── Apple Dark Mode (Deep OLED Black & Monochrome High Contrast) ── */
 [data-theme='dark'] {
-  --md-sys-color-primary: #D0BCFF;
-  --md-sys-color-on-primary: #381E72;
-  --md-sys-color-primary-container: #4F378B;
-  --md-sys-color-on-primary-container: #EADDFF;
-  --md-sys-color-secondary: #CCC2DC;
-  --md-sys-color-on-secondary: #332D41;
-  --md-sys-color-secondary-container: #4A4458;
-  --md-sys-color-on-secondary-container: #E8DEF8;
-  --md-sys-color-tertiary: #EFB8C8;
-  --md-sys-color-on-tertiary: #492532;
-  --md-sys-color-tertiary-container: #633B48;
-  --md-sys-color-on-tertiary-container: #FFD8E4;
-  --md-sys-color-error: #F2B8B5;
-  --md-sys-color-on-error: #601410;
-  --md-sys-color-error-container: #8C1D18;
-  --md-sys-color-on-error-container: #F9DEDC;
-  --md-sys-color-outline: #938F99;
-  --md-sys-color-outline-variant: #49454F;
-  --md-sys-color-background: #1C1B1F;
-  --md-sys-color-on-background: #E6E1E5;
-  --md-sys-color-surface: #1C1B1F;
-  --md-sys-color-on-surface: #E6E1E5;
-  --md-sys-color-surface-variant: #49454F;
-  --md-sys-color-on-surface-variant: #CAC4D0;
-  --md-sys-color-surface-container-lowest: #0F0D13;
-  --md-sys-color-surface-container-low: #1D1B20;
-  --md-sys-color-surface-container: #211F26;
-  --md-sys-color-surface-container-high: #2B2930;
-  --md-sys-color-surface-container-highest: #36343B;
-  --md-sys-color-inverse-surface: #E6E1E5;
-  --md-sys-color-inverse-on-surface: #313033;
-  --md-sys-color-inverse-primary: #6750A4;
+  /* ── Apple System Palette (Dark Monochrome) ── */
+  --apple-blue: #FFFFFF;
+  --apple-blue-hover: #F5F5F7;
+  --apple-indigo: #A1A1A6;
+  --apple-purple: #86868B;
+  --apple-pink: #FFFFFF;
+  --apple-red: #FF453A;
+  --apple-orange: #FF9F0A;
+  --apple-yellow: #FFD60A;
+  --apple-green: #30D158;
+  --apple-teal: #A1A1A6;
+  --apple-cyan: #FFFFFF;
 
-  --card-shadow-resting: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 2px rgba(0,0,0,0.2);
-  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0,0,0,0.3);
-  --appbar-bg: rgba(28, 27, 31, 0.85);
+  --md-sys-color-primary: #FFFFFF;
+  --md-sys-color-on-primary: #000000;
+  --md-sys-color-primary-container: rgba(255, 255, 255, 0.12);
+  --md-sys-color-on-primary-container: #FFFFFF;
+
+  --md-sys-color-secondary: #A1A1A6;
+  --md-sys-color-on-secondary: #000000;
+  --md-sys-color-secondary-container: rgba(255, 255, 255, 0.08);
+  --md-sys-color-on-secondary-container: #F5F5F7;
+
+  --md-sys-color-tertiary: #86868B;
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-tertiary-container: rgba(255, 255, 255, 0.06);
+  --md-sys-color-on-tertiary-container: #F5F5F7;
+
+  --md-sys-color-error: #FF453A;
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-error-container: rgba(255, 69, 58, 0.2);
+  --md-sys-color-on-error-container: #FFB3AD;
+
+  --md-sys-color-outline: #6E6E73;
+  --md-sys-color-outline-variant: #3A3A3C;
+
+  /* Backgrounds & Surfaces (Apple OLED Deep Black) */
+  --md-sys-color-background: #000000;
+  --md-sys-color-on-background: #F5F5F7;
+  --md-sys-color-surface: #1C1C1E;
+  --md-sys-color-on-surface: #F5F5F7;
+  --md-sys-color-surface-variant: #2C2C2E;
+  --md-sys-color-on-surface-variant: #A1A1A6;
+
+  --md-sys-color-surface-container-lowest: #000000;
+  --md-sys-color-surface-container-low: #1C1C1E;
+  --md-sys-color-surface-container: #2C2C2E;
+  --md-sys-color-surface-container-high: #3A3A3C;
+  --md-sys-color-surface-container-highest: #48484A;
+
+  --md-sys-color-inverse-surface: #F5F5F7;
+  --md-sys-color-inverse-on-surface: #1C1C1E;
+  --md-sys-color-inverse-primary: #1D1D1F;
+
+  --card-shadow-resting: inset 0 1px 1px rgba(255, 255, 255, 0.12), 0 8px 32px rgba(0, 0, 0, 0.35);
+  --card-shadow-hover: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 16px 48px rgba(0, 0, 0, 0.5);
+  --appbar-bg: rgba(0, 0, 0, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --liquid-glass-bg: rgba(28, 28, 30, 0.65);
+  --liquid-glass-border: rgba(255, 255, 255, 0.14);
+  --liquid-glass-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 12px 40px rgba(0, 0, 0, 0.4);
+  --liquid-blur: blur(30px) saturate(210%);
 }

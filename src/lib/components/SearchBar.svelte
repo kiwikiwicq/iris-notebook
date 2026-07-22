@@ -4,6 +4,7 @@
 	import { formatDate } from '$lib/utils/format-date';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import SFIcon from './SFIcon.svelte';
 
 	// Load posts into search store
 	onMount(() => {
@@ -87,7 +88,7 @@
 		<div class="search-container animate-scale-in">
 			<!-- Search input -->
 			<div class="search-input-wrap">
-				<span class="material-symbols-rounded search-icon">search</span>
+				<SFIcon name="search" size={18} color="var(--md-sys-color-on-surface-variant)" />
 				<input
 					id="search-input"
 					type="search"
@@ -106,7 +107,7 @@
 						onclick={() => (searchStore.query = '')}
 						aria-label="Clear search"
 					>
-						<span class="material-symbols-rounded">close</span>
+						<SFIcon name="close" size={14} />
 					</button>
 				{:else}
 					<kbd class="kbd">ESC</kbd>
@@ -117,11 +118,11 @@
 			<div id="search-results" role="listbox">
 				{#if searchStore.query.length >= 2 && searchStore.results.length === 0}
 					<div class="search-empty">
-						<span class="material-symbols-rounded">search_off</span>
-						<p>No results for "<strong>{searchStore.query}</strong>"</p>
+						<SFIcon name="search" size={36} />
+						<p>No results found for "<strong>{searchStore.query}</strong>"</p>
 					</div>
 				{:else if searchStore.results.length > 0}
-					<p class="results-label label-small">{searchStore.results.length} results</p>
+					<p class="results-label">{searchStore.results.length} results</p>
 					<ul class="results-list">
 						{#each searchStore.results as post, i}
 							<li>
@@ -135,13 +136,13 @@
 									style="--delay: {i * 40}ms"
 								>
 									<div class="result-main">
-										<span class="result-category label-small">{post.category}</span>
-										<span class="result-title body-large">{post.title}</span>
-										<span class="result-desc body-medium">{post.description}</span>
+										<span class="result-category">{post.category}</span>
+										<span class="result-title">{post.title}</span>
+										<span class="result-desc">{post.description}</span>
 									</div>
 									<div class="result-meta">
-										<span class="label-small">{formatDate(post.date)}</span>
-										<span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
+										<span>{formatDate(post.date)}</span>
+										<SFIcon name="arrowRight" size={14} />
 									</div>
 								</a>
 							</li>
@@ -149,7 +150,7 @@
 					</ul>
 				{:else}
 					<div class="search-hint">
-						<p class="body-medium">Try searching for "Android", "Rust", "Linux", or "AI"</p>
+						<p>Spotlight Search — Type to search Android, Linux, AI or System Architecture</p>
 					</div>
 				{/if}
 			</div>
@@ -162,34 +163,38 @@
 		position: fixed;
 		inset: 0;
 		z-index: 200;
-		background: rgba(0, 0, 0, 0.4);
-		backdrop-filter: blur(4px);
+		background: rgba(0, 0, 0, 0.45);
+		backdrop-filter: var(--liquid-blur);
+		-webkit-backdrop-filter: var(--liquid-blur);
 		display: flex;
 		align-items: flex-start;
 		justify-content: center;
-		padding-top: 80px;
+		padding-top: 90px;
 		padding-inline: var(--space-4);
 	}
 
 	.search-container {
 		width: 100%;
-		max-width: 600px;
-		background: var(--md-sys-color-surface-container-highest);
-		border-radius: var(--shape-dialog);
-		box-shadow: var(--md-sys-elevation-5);
+		max-width: 620px;
+		background: var(--liquid-glass-bg);
+		backdrop-filter: var(--liquid-blur);
+		-webkit-backdrop-filter: var(--liquid-blur);
+		border-radius: 22px;
+		border: 1px solid var(--liquid-glass-border);
+		box-shadow: var(--liquid-glass-shadow);
 		overflow: hidden;
 	}
 
 	.search-input-wrap {
 		display: flex;
 		align-items: center;
-		gap: var(--space-3);
-		padding: var(--space-4) var(--space-5);
-		border-bottom: 1px solid var(--md-sys-color-outline-variant);
+		gap: 12px;
+		padding: 16px 20px;
+		border-bottom: 1px solid var(--glass-border);
 	}
 
 	.search-icon {
-		color: var(--md-sys-color-on-surface-variant);
+		color: var(--apple-blue);
 		flex-shrink: 0;
 	}
 
@@ -199,15 +204,16 @@
 		background: transparent;
 		font-family: var(--font-body);
 		font-size: 18px;
+		font-weight: 500;
 		color: var(--md-sys-color-on-surface);
 		outline: none;
 	}
 
 	.search-input::placeholder {
 		color: var(--md-sys-color-on-surface-variant);
+		font-weight: 400;
 	}
 
-	/* Remove browser default search clear button */
 	.search-input::-webkit-search-decoration,
 	.search-input::-webkit-search-cancel-button {
 		display: none;
@@ -217,55 +223,77 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 32px;
-		height: 32px;
+		width: 28px;
+		height: 28px;
 		border-radius: var(--md-sys-shape-corner-full);
 		border: none;
-		background: var(--md-sys-color-surface-container);
+		background: rgba(140, 140, 145, 0.15);
 		color: var(--md-sys-color-on-surface-variant);
 		cursor: pointer;
 		flex-shrink: 0;
 	}
 
-	.clear-btn .material-symbols-rounded { font-size: 18px; }
+	.clear-btn .material-symbols-rounded { font-size: 16px; }
 
 	.kbd {
-		font-family: var(--font-mono);
-		font-size: 11px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+		font-size: 10px;
+		font-weight: 600;
 		padding: 2px 6px;
-		background: var(--md-sys-color-surface-container);
-		border: 1px solid var(--md-sys-color-outline-variant);
-		border-radius: 4px;
+		min-width: 20px;
+		height: 20px;
+		background: rgba(140, 140, 145, 0.16);
+		border: 1px solid var(--glass-border);
+		border-radius: 5px;
+		box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.18);
 		color: var(--md-sys-color-on-surface-variant);
 		white-space: nowrap;
+		line-height: 1;
 	}
 
 	.results-label {
-		padding: var(--space-3) var(--space-5) var(--space-2);
+		padding: 12px 20px 6px;
 		color: var(--md-sys-color-on-surface-variant);
+		font-size: 11px;
+		font-weight: 600;
 		text-transform: uppercase;
-		letter-spacing: 1px;
+		letter-spacing: 0.04em;
 	}
 
 	.results-list {
 		list-style: none;
-		max-height: 420px;
+		max-height: 400px;
 		overflow-y: auto;
+		padding: 6px;
 	}
 
 	.result-item {
 		display: flex;
 		align-items: center;
-		gap: var(--space-4);
-		padding: var(--space-4) var(--space-5);
+		gap: 12px;
+		padding: 12px 14px;
+		border-radius: 12px;
 		text-decoration: none;
 		color: var(--md-sys-color-on-surface);
 		transition: background var(--motion-duration-short3) var(--motion-easing-standard);
-		animation: slide-up var(--motion-duration-medium1) var(--motion-easing-emphasized-decelerate) var(--delay, 0ms) both;
 	}
 
-	.result-item:hover {
-		background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+	.result-item:hover,
+	.result-item.active {
+		background: rgba(140, 140, 145, 0.18);
+		color: var(--md-sys-color-on-surface);
+	}
+
+	.result-item:hover .result-category,
+	.result-item.active .result-category,
+	.result-item:hover .result-desc,
+	.result-item.active .result-desc,
+	.result-item:hover .result-meta,
+	.result-item.active .result-meta {
+		color: var(--md-sys-color-on-surface-variant);
 	}
 
 	.result-main {
@@ -277,13 +305,17 @@
 	}
 
 	.result-category {
-		color: var(--md-sys-color-primary);
+		font-size: 11px;
+		font-weight: 700;
+		color: var(--md-sys-color-on-surface-variant);
 		text-transform: uppercase;
-		letter-spacing: 0.8px;
+		letter-spacing: 0.02em;
 	}
 
 	.result-title {
-		font-weight: 500;
+		font-size: 15px;
+		font-weight: 600;
+		letter-spacing: -0.01em;
 		display: -webkit-box;
 		-webkit-line-clamp: 1;
 		-webkit-box-orient: vertical;
@@ -291,6 +323,7 @@
 	}
 
 	.result-desc {
+		font-size: 13px;
 		color: var(--md-sys-color-on-surface-variant);
 		display: -webkit-box;
 		-webkit-line-clamp: 1;
@@ -301,23 +334,24 @@
 	.result-meta {
 		display: flex;
 		align-items: center;
-		gap: var(--space-2);
+		gap: 6px;
 		color: var(--md-sys-color-on-surface-variant);
 		flex-shrink: 0;
 		font-size: 12px;
 	}
 
-	.result-meta .material-symbols-rounded { font-size: 18px; }
+	.result-meta .material-symbols-rounded { font-size: 16px; }
 
 	.search-empty, .search-hint {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: var(--space-3);
-		padding: var(--space-10) var(--space-6);
+		gap: 12px;
+		padding: 40px 24px;
 		color: var(--md-sys-color-on-surface-variant);
+		font-size: 14px;
 		text-align: center;
 	}
 
-	.search-empty .material-symbols-rounded { font-size: 48px; opacity: 0.5; }
+	.search-empty .material-symbols-rounded { font-size: 40px; opacity: 0.5; }
 </style>

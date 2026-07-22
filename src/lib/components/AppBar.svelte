@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import ThemeToggle from './ThemeToggle.svelte';
 	import SearchBar from './SearchBar.svelte';
+	import SFIcon from './SFIcon.svelte';
 
 	interface Props {
 		onMenuClick: () => void;
@@ -25,11 +26,11 @@
 	});
 
 	const navLinks = [
-		{ href: '/', label: 'Home', icon: 'home' },
-		{ href: '/articles', label: 'Articles', icon: 'article' },
-		{ href: '/categories', label: 'Categories', icon: 'category' },
-		{ href: '/projects', label: 'Projects', icon: 'code_blocks' },
-		{ href: '/about', label: 'About', icon: 'person' }
+		{ href: '/', label: 'Overview' },
+		{ href: '/articles', label: 'Articles' },
+		{ href: '/categories', label: 'Categories' },
+		{ href: '/projects', label: 'Projects' },
+		{ href: '/about', label: 'About' }
 	];
 
 	function isActive(href: string): boolean {
@@ -39,9 +40,12 @@
 </script>
 
 <header class="app-bar" class:scrolled aria-label="Site navigation">
-	<div class="app-bar__inner container">
+	<div class="app-bar__inner">
 		<!-- Logo -->
-		<a href="/" class="app-bar__logo" aria-label="Iris Notebook – home">
+		<a href="/" class="app-bar__logo" aria-label="Iris Notebook – Home">
+			<div class="logo-badge">
+				<SFIcon name="code" size={15} color="#ffffff" />
+			</div>
 			<span class="logo-text">Iris Notebook</span>
 		</a>
 
@@ -62,32 +66,32 @@
 		<!-- Actions -->
 		<div class="app-bar__actions">
 			<button
-				class="icon-btn"
+				class="icon-btn search-trigger"
 				onclick={() => searchStore.open()}
-				aria-label="Search articles (Ctrl+K)"
-				title="Search (Ctrl+K)"
+				aria-label="Search articles (⌘K)"
+				title="Search (⌘K)"
 			>
-				<span class="material-symbols-rounded">search</span>
+				<SFIcon name="search" size={15} />
+				<span class="search-placeholder">Search articles...</span>
+				<kbd class="cmd-badge">⌘K</kbd>
 			</button>
 
 			<ThemeToggle />
 
 			<a
 				href="https://github.com/kiwikiwicq"
-				class="icon-btn"
+				class="icon-btn github-btn-desktop"
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="Visit GitHub profile"
-				title="GitHub"
+				title="GitHub Profile"
 			>
-				<svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
-					<path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-				</svg>
+				<SFIcon name="github" size={18} />
 			</a>
 
 			<!-- Mobile menu button -->
 			<button class="icon-btn menu-btn" onclick={onMenuClick} aria-label="Open navigation menu">
-				<span class="material-symbols-rounded">menu</span>
+				<SFIcon name="menu" size={18} />
 			</button>
 		</div>
 	</div>
@@ -104,16 +108,17 @@
 		z-index: 100;
 		height: var(--nav-height);
 		background: var(--appbar-bg);
-		backdrop-filter: blur(20px);
-		-webkit-backdrop-filter: blur(20px);
-		border-bottom: 1px solid transparent;
+		backdrop-filter: var(--liquid-blur);
+		-webkit-backdrop-filter: var(--liquid-blur);
+		border-bottom: 1px solid var(--liquid-glass-border);
+		box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
 		transition:
+			background var(--motion-duration-medium1) var(--motion-easing-standard),
 			border-color var(--motion-duration-medium1) var(--motion-easing-standard),
 			box-shadow var(--motion-duration-medium1) var(--motion-easing-standard);
 	}
 
 	.app-bar.scrolled {
-		border-color: var(--md-sys-color-outline-variant);
 		box-shadow: var(--md-sys-elevation-1);
 	}
 
@@ -121,6 +126,10 @@
 		display: flex;
 		align-items: center;
 		height: 100%;
+		width: 100%;
+		max-width: var(--max-width);
+		margin-inline: auto;
+		padding-inline: var(--space-6);
 		gap: var(--space-6);
 	}
 
@@ -128,36 +137,35 @@
 	.app-bar__logo {
 		display: flex;
 		align-items: center;
-		gap: var(--space-2);
+		gap: 10px;
 		text-decoration: none;
 		color: var(--md-sys-color-on-surface);
 		flex-shrink: 0;
 	}
 
-	.logo-icon {
+	.logo-badge {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 36px;
-		height: 36px;
-		background: var(--md-sys-color-primary-container);
-		border-radius: var(--md-sys-shape-corner-medium);
-		color: var(--md-sys-color-on-primary-container);
-		transition: transform var(--motion-duration-medium1) var(--motion-easing-standard);
+		width: 28px;
+		height: 28px;
+		background: var(--liquid-glass-bg);
+		backdrop-filter: var(--liquid-blur);
+		border: 1px solid var(--liquid-glass-border);
+		border-radius: 8px;
+		color: var(--md-sys-color-on-surface);
+		box-shadow: var(--liquid-glass-shadow);
+		transition: transform 0.25s var(--motion-easing-standard);
 	}
 
-	.logo-icon .material-symbols-rounded {
-		font-size: 20px;
-	}
-
-	.app-bar__logo:hover .logo-icon {
-		transform: rotate(-10deg) scale(1.08);
+	.app-bar__logo:hover .logo-badge {
+		transform: scale(1.08);
 	}
 
 	.logo-text {
-		font-size: 18px;
+		font-size: 17px;
 		font-weight: 600;
-		letter-spacing: -0.3px;
+		letter-spacing: -0.022em;
 		color: var(--md-sys-color-on-surface);
 	}
 
@@ -174,11 +182,11 @@
 		position: relative;
 		display: flex;
 		align-items: center;
-		padding: var(--space-2) var(--space-3);
+		padding: 6px 14px;
 		border-radius: var(--md-sys-shape-corner-full);
-		font-size: 14px;
+		font-size: 13px;
 		font-weight: 500;
-		letter-spacing: 0.1px;
+		letter-spacing: -0.01em;
 		color: var(--md-sys-color-on-surface-variant);
 		text-decoration: none;
 		transition:
@@ -187,13 +195,13 @@
 	}
 
 	.nav-link:hover {
-		background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
 		color: var(--md-sys-color-on-surface);
+		background: rgba(140, 140, 145, 0.12);
 	}
 
 	.nav-link.active {
-		background: var(--md-sys-color-secondary-container);
-		color: var(--md-sys-color-on-secondary-container);
+		background: rgba(140, 140, 145, 0.16);
+		color: var(--md-sys-color-on-surface);
 		font-weight: 600;
 	}
 
@@ -201,45 +209,115 @@
 	.app-bar__actions {
 		display: flex;
 		align-items: center;
-		gap: var(--space-1);
+		gap: var(--space-2);
 		flex-shrink: 0;
+		margin-left: auto;
 	}
 
 	.icon-btn {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 40px;
-		height: 40px;
+		height: 34px;
+		padding-inline: 8px;
 		border-radius: var(--md-sys-shape-corner-full);
-		border: none;
+		border: 1px solid transparent;
 		background: transparent;
 		color: var(--md-sys-color-on-surface-variant);
 		cursor: pointer;
 		transition:
 			background var(--motion-duration-short4) var(--motion-easing-standard),
+			border-color var(--motion-duration-short4) var(--motion-easing-standard),
 			color var(--motion-duration-short4) var(--motion-easing-standard);
 		text-decoration: none;
 	}
 
-	.icon-btn:hover {
-		background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+	.search-trigger {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		height: 34px;
+		width: 210px;
+		padding-inline: 12px;
+		border-radius: var(--md-sys-shape-corner-full);
+		border: 1px solid var(--liquid-glass-border);
+		background: var(--liquid-glass-bg);
+		backdrop-filter: var(--liquid-blur);
+		-webkit-backdrop-filter: var(--liquid-blur);
+		box-shadow: var(--liquid-glass-shadow);
+		color: var(--md-sys-color-on-surface-variant);
+		cursor: pointer;
+		transition:
+			width 0.25s var(--motion-easing-standard),
+			background 0.2s ease,
+			border-color 0.2s ease;
+	}
+
+	.search-trigger:hover {
+		background: rgba(140, 140, 145, 0.18);
+		border-color: rgba(255, 255, 255, 0.3);
 		color: var(--md-sys-color-on-surface);
 	}
 
-	.icon-btn:active {
-		background: color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+	.search-placeholder {
+		font-size: 13px;
+		font-weight: 400;
+		color: var(--md-sys-color-on-surface-variant);
+		flex: 1;
+		text-align: left;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
-	.github-icon {
-		width: 20px;
-		height: 20px;
+	.cmd-badge {
+		font-size: 11px;
+		font-weight: 500;
+		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+		padding: 2px 6px;
+		border-radius: 5px;
+		background: rgba(140, 140, 145, 0.16);
+		border: 1px solid var(--glass-border);
+		color: var(--md-sys-color-on-surface-variant);
+		letter-spacing: 0.08em;
+		line-height: 1.2;
 	}
 
-	/* Mobile: hide desktop nav */
+	.icon-btn:hover {
+		background: rgba(140, 140, 145, 0.12);
+		color: var(--md-sys-color-on-surface);
+	}
+
+	/* Mobile: hide desktop nav & desktop GitHub button, collapse search */
 	@media (max-width: 768px) {
-		.app-bar__nav {
+		.app-bar__inner {
+			width: 100%;
+			max-width: 100%;
+			justify-content: space-between;
+			padding-inline: max(14px, env(safe-area-inset-right, 0px));
+		}
+		.app-bar__actions {
+			gap: 2px;
+		}
+		.menu-btn {
+			margin-right: -4px;
+		}
+		.app-bar__nav,
+		.github-btn-desktop {
+			display: none !important;
+		}
+		.search-trigger {
+			width: 36px;
+			height: 36px;
+			padding-inline: 0;
+			justify-content: center;
+		}
+		.search-placeholder,
+		.cmd-badge {
 			display: none;
+		}
+		.logo-text {
+			font-size: 15px;
 		}
 	}
 

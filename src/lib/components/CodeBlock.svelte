@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SFIcon from './SFIcon.svelte';
+
 	interface Props {
 		code: string;
 		lang?: string;
@@ -20,24 +22,22 @@
 	}
 </script>
 
-<div class="code-block">
+<div class="code-block liquid-glass">
 	<div class="code-header">
 		<div class="code-meta">
 			{#if filename}
 				<span class="filename">
-					<span class="material-symbols-rounded" style="font-size: 14px">description</span>
-					{filename}
+					<SFIcon name="articles" size={13} />
+					<span>{filename}</span>
 				</span>
 			{/if}
 			{#if lang && lang !== 'text'}
 				<span class="lang-badge">{lang}</span>
 			{/if}
 		</div>
-		<button class="copy-btn" onclick={copyCode} aria-label={copied ? 'Copied!' : 'Copy code'}>
-			<span class="material-symbols-rounded" style="font-size: 16px">
-				{copied ? 'check' : 'content_copy'}
-			</span>
-			{copied ? 'Copied!' : 'Copy'}
+		<button class="copy-btn" class:copied onclick={copyCode} aria-label={copied ? 'Copied!' : 'Copy code'}>
+			<SFIcon name={copied ? 'check' : 'copy'} size={13} color={copied ? 'var(--apple-green)' : 'currentColor'} />
+			<span>{copied ? 'Copied!' : 'Copy'}</span>
 		</button>
 	</div>
 	<div class="code-content">
@@ -47,10 +47,10 @@
 
 <style>
 	.code-block {
-		border-radius: var(--md-sys-shape-corner-large);
+		border-radius: 16px;
 		overflow: hidden;
-		border: 1px solid var(--md-sys-color-outline-variant);
 		margin-block: 1.5rem;
+		position: relative;
 	}
 
 	.code-header {
@@ -58,75 +58,74 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: var(--space-3) var(--space-4);
-		background: var(--md-sys-color-surface-container-high);
-		border-bottom: 1px solid var(--md-sys-color-outline-variant);
+		background: rgba(140, 140, 145, 0.1);
+		border-bottom: 1px solid var(--glass-border);
 	}
 
 	.code-meta {
 		display: flex;
 		align-items: center;
-		gap: var(--space-3);
+		gap: var(--space-2);
 	}
 
 	.filename {
-		display: flex;
+		display: inline-flex;
 		align-items: center;
-		gap: 4px;
+		gap: 6px;
 		font-family: var(--font-mono);
-		font-size: 13px;
+		font-size: 12px;
 		color: var(--md-sys-color-on-surface-variant);
 	}
 
 	.lang-badge {
-		padding: 2px 8px;
-		border-radius: var(--md-sys-shape-corner-full);
-		background: var(--md-sys-color-primary-container);
-		color: var(--md-sys-color-on-primary-container);
+		font-family: var(--font-mono);
 		font-size: 11px;
-		font-weight: 600;
 		text-transform: uppercase;
-		letter-spacing: 0.5px;
+		letter-spacing: 0.05em;
+		padding: 2px 6px;
+		border-radius: 4px;
+		background: rgba(140, 140, 145, 0.14);
+		color: var(--md-sys-color-on-surface-variant);
 	}
 
 	.copy-btn {
-		display: flex;
+		display: inline-flex;
 		align-items: center;
-		gap: 4px;
+		gap: 6px;
 		padding: 4px 10px;
-		border-radius: var(--md-sys-shape-corner-full);
-		border: 1px solid var(--md-sys-color-outline-variant);
-		background: transparent;
+		border-radius: 6px;
+		border: 1px solid var(--glass-border);
+		background: rgba(140, 140, 145, 0.12);
 		color: var(--md-sys-color-on-surface-variant);
 		font-family: var(--font-body);
 		font-size: 12px;
+		font-weight: 500;
 		cursor: pointer;
-		transition:
-			background var(--motion-duration-short4) var(--motion-easing-standard),
-			color var(--motion-duration-short4) var(--motion-easing-standard),
-			border-color var(--motion-duration-short4) var(--motion-easing-standard);
+		transition: background 0.2s ease, color 0.2s ease;
 	}
 
 	.copy-btn:hover {
-		background: var(--md-sys-color-primary-container);
-		color: var(--md-sys-color-on-primary-container);
-		border-color: var(--md-sys-color-primary);
+		background: rgba(140, 140, 145, 0.22);
+		color: var(--md-sys-color-on-surface);
+	}
+
+	.copy-btn.copied {
+		background: rgba(48, 209, 88, 0.15);
+		border-color: var(--apple-green);
+		color: var(--md-sys-color-on-surface);
 	}
 
 	.code-content {
+		padding: var(--space-4);
 		overflow-x: auto;
-		background: var(--md-sys-color-surface-container);
+		background: rgba(0, 0, 0, 0.2);
 	}
 
-	pre {
-		padding: var(--space-5);
+	.code-content pre {
 		margin: 0;
 		font-family: var(--font-mono);
-		font-size: 14px;
-		line-height: 1.65;
-		tab-size: 2;
-	}
-
-	code {
-		font-family: var(--font-mono);
+		font-size: 13px;
+		line-height: 1.6;
+		color: var(--md-sys-color-on-surface);
 	}
 </style>
