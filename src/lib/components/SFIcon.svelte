@@ -112,10 +112,19 @@
 		<line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
 		<line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
 	{:else if name === 'menu'}
-		<!-- SF Symbol: line.horizontal.3 -->
-		<line x1="3" y1="6" x2="21" y2="6" />
-		<line x1="3" y1="12" x2="21" y2="12" />
-		<line x1="3" y1="18" x2="21" y2="18" />
+		<!-- Exact 1:1 Equal Size: iOS Control Center Dual-Pill Toggle Hamburger Icon -->
+		<g>
+			<!-- Top Pill: Outlined Ring + Left Capsule Thumb (Visual bounds: x 2.5..21.5, y 2.5..11.0) -->
+			<rect x="3.3" y="3.3" width="17.4" height="6.9" rx="3.45" stroke={color} stroke-width="1.6" fill="none" />
+			<rect x="5.2" y="4.7" width="6.6" height="4.1" rx="2.05" fill={color} stroke="none" />
+			<!-- Bottom Pill: Solid Body + Right Cutout Thumb (Visual bounds: x 2.5..21.5, y 13.5..22.0) -->
+			<path
+				fill={color}
+				stroke="none"
+				fill-rule="evenodd"
+				d="M 6.75,13.5 H 17.25 A 4.25,4.25 0 0 1 21.5,17.75 A 4.25,4.25 0 0 1 17.25,22 H 6.75 A 4.25,4.25 0 0 1 2.5,17.75 A 4.25,4.25 0 0 1 6.75,13.5 Z M 14.25,15.7 H 16.75 A 2.05,2.05 0 0 1 18.8,17.75 A 2.05,2.05 0 0 1 16.75,19.8 H 14.25 A 2.05,2.05 0 0 1 12.2,17.75 A 2.05,2.05 0 0 1 14.25,15.7 Z"
+			/>
+		</g>
 	{:else if name === 'close'}
 		<!-- SF Symbol: xmark -->
 		<line x1="18" y1="6" x2="6" y2="18" />

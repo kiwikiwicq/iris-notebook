@@ -116,15 +116,17 @@
 		transition: background 0.15s ease;
 	}
 
-	/* WebKit Thumb */
+	/* WebKit Thumb - Apple Squircle Capsule Knob */
 	.glass-range-input::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		appearance: none;
-		width: 18px;
-		height: 18px;
-		border-radius: 50%;
+		width: 20px;
+		height: 15px;
+		border-radius: 6.5px;
 		background: #ffffff;
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 0 1px rgba(0, 0, 0, 0.15);
+		box-shadow:
+			inset 0 1px 0.5px rgba(255, 255, 255, 0.9),
+			0 2px 5px rgba(0, 0, 0, 0.35);
 		cursor: pointer;
 		transition:
 			transform 0.15s ease,
@@ -132,22 +134,26 @@
 	}
 
 	.glass-range-input::-webkit-slider-thumb:hover {
-		transform: scale(1.1);
-		box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+		transform: scale(1.08);
+		box-shadow:
+			inset 0 1px 0.5px rgba(255, 255, 255, 1),
+			0 3px 8px rgba(0, 0, 0, 0.45);
 	}
 
 	.glass-range-input::-webkit-slider-thumb:active {
-		transform: scale(0.95);
+		transform: scale(0.94);
 	}
 
 	/* Firefox Thumb */
 	.glass-range-input::-moz-range-thumb {
-		width: 18px;
-		height: 18px;
+		width: 20px;
+		height: 15px;
 		border: none;
-		border-radius: 50%;
+		border-radius: 6.5px;
 		background: #ffffff;
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+		box-shadow:
+			inset 0 1px 0.5px rgba(255, 255, 255, 0.9),
+			0 2px 5px rgba(0, 0, 0, 0.35);
 		cursor: pointer;
 		transition: transform 0.15s ease;
 	}

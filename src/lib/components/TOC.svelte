@@ -43,18 +43,14 @@
 	function scrollTo(id: string) {
 		const el = document.getElementById(id);
 		if (el) {
-			const offset = 80;
-			const bodyRect = document.body.getBoundingClientRect().top;
-			const elementRect = el.getBoundingClientRect().top;
-			const elementPosition = elementRect - bodyRect;
-			const offsetPosition = elementPosition - offset;
-
-			window.scrollTo({
-				top: offsetPosition,
-				behavior: 'smooth'
-			});
 			activeId = id;
 			sheetOpen = false;
+
+			// Smooth native hardware-accelerated scroll to target element
+			el.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start'
+			});
 		}
 	}
 
@@ -172,9 +168,12 @@
 		font-size: 13px;
 		line-height: 1.5;
 		color: var(--md-sys-color-on-surface-variant);
-		padding: 5px 10px;
+		padding: 6px 12px;
 		border-radius: 8px;
-		transition: background 0.2s ease, color 0.2s ease;
+		transition:
+			background 0.25s var(--motion-easing-standard),
+			color 0.25s var(--motion-easing-standard),
+			transform 0.2s var(--motion-easing-standard);
 	}
 
 	.toc-link:hover {
@@ -186,6 +185,7 @@
 		color: var(--md-sys-color-on-surface);
 		font-weight: 600;
 		background: rgba(140, 140, 145, 0.18);
+		transform: translateX(3px);
 	}
 
 	/* ── Mobile FAB ── */

@@ -24,6 +24,11 @@ html {
   overflow-x: clip;
 }
 
+h1[id], h2[id], h3[id], h4[id], h5[id], h6[id],
+[id] {
+  scroll-margin-top: 84px;
+}
+
 body {
   font-family: var(--font-body);
   font-size: var(--typescale-body-large-size);

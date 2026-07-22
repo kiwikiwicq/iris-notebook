@@ -14,12 +14,12 @@
 	<button
 		class="search-trigger"
 		onclick={() => searchStore.open()}
-		aria-label="Search articles (⌘K)"
+		aria-label="Search (⌘K)"
 		title="Search (⌘K)"
 	>
-		<SFIcon name="search" size={16} />
-		<span class="search-placeholder">Search articles...</span>
-		<kbd class="cmd-badge">⌘K</kbd>
+		<SFIcon name="search" size={15} />
+		<span class="search-placeholder">Search</span>
+		<span class="cmd-shortcut">⌘ K</span>
 	</button>
 
 	<div class="action-divider"></div>
@@ -39,7 +39,7 @@
 
 	<!-- Mobile menu button -->
 	<button class="icon-btn menu-btn" onclick={onMenuClick} aria-label="Open navigation menu">
-		<SFIcon name="menu" size={18} />
+		<SFIcon name="menu" size={22} />
 	</button>
 </div>
 
@@ -79,8 +79,8 @@
 		align-items: center;
 		gap: 8px;
 		height: 34px;
-		width: 180px;
-		padding-inline: 10px 8px;
+		width: 175px;
+		padding-inline: 10px 10px;
 		border-radius: var(--md-sys-shape-corner-full);
 		border: 1px solid transparent;
 		background: transparent;
@@ -97,8 +97,13 @@
 		color: var(--md-sys-color-on-surface);
 	}
 
+	.search-trigger:hover .cmd-shortcut {
+		opacity: 0.9;
+		color: var(--md-sys-color-on-surface);
+	}
+
 	.search-placeholder {
-		font-size: 12.5px;
+		font-size: 13px;
 		font-weight: 400;
 		color: var(--md-sys-color-on-surface-variant);
 		flex: 1;
@@ -106,19 +111,17 @@
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		letter-spacing: -0.01em;
 	}
 
-	.cmd-badge {
-		font-size: 10.5px;
-		font-weight: 500;
-		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
-		padding: 2px 5px;
-		border-radius: 5px;
-		background: rgba(140, 140, 145, 0.16);
-		border: 1px solid var(--glass-border);
+	.cmd-shortcut {
+		font-size: 12px;
+		font-weight: 400;
+		font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', system-ui, sans-serif;
 		color: var(--md-sys-color-on-surface-variant);
+		opacity: 0.65;
 		letter-spacing: 0.05em;
-		line-height: 1.2;
+		transition: opacity 0.2s ease, color 0.2s ease;
 	}
 
 	.icon-btn {
@@ -162,7 +165,7 @@
 		}
 
 		.search-placeholder,
-		.cmd-badge,
+		.cmd-shortcut,
 		.action-divider,
 		.github-btn-desktop {
 			display: none !important;
