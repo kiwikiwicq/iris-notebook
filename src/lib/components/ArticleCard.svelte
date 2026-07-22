@@ -55,7 +55,7 @@
 					aria-label={bookmarked ? 'Remove bookmark' : 'Save article'}
 					title={bookmarked ? 'Remove bookmark' : 'Save article'}
 				>
-					<SFIcon name={bookmarked ? 'bookmarked' : 'bookmark'} size={14} color="#ffffff" />
+					<SFIcon name={bookmarked ? 'bookmarked' : 'bookmark'} size={14} color="var(--md-sys-color-on-surface)" />
 				</button>
 			</div>
 		</div>
