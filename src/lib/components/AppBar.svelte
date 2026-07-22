@@ -71,7 +71,7 @@
 				aria-label="Search articles (⌘K)"
 				title="Search (⌘K)"
 			>
-				<SFIcon name="search" size={15} />
+				<SFIcon name="search" size={17} />
 				<span class="search-placeholder">Search articles...</span>
 				<kbd class="cmd-badge">⌘K</kbd>
 			</button>
