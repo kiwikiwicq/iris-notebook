@@ -45,6 +45,10 @@ function createThemeStore() {
 			if (metaThemeColor) {
 				metaThemeColor.setAttribute('content', t === 'dark' ? '#1C1B1F' : '#6750A4');
 			}
+			// Update glass CSS variables for new theme
+			import('./glass.svelte').then(({ glassStore }) => {
+				glassStore.applyOpacity(glassStore.opacity);
+			});
 		}
 	}
 

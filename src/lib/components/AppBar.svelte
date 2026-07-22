@@ -1,6 +1,7 @@
 <script lang="ts">
 	import NavBrand from './nav/NavBrand.svelte';
 	import NavMenu from './nav/NavMenu.svelte';
+	import NavGlassSlider from './nav/NavGlassSlider.svelte';
 	import NavActions from './nav/NavActions.svelte';
 	import SearchBar from './SearchBar.svelte';
 
@@ -27,6 +28,7 @@
 	<div class="app-bar__container">
 		<NavBrand />
 		<NavMenu />
+		<NavGlassSlider />
 		<NavActions {onMenuClick} />
 	</div>
 </header>

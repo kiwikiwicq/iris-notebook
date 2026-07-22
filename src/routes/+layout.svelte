@@ -4,6 +4,7 @@
 	import NavDrawer from '$lib/components/NavDrawer.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import { themeStore } from '$lib/stores/theme.svelte';
+	import { glassStore } from '$lib/stores/glass.svelte';
 	import { loadMaterialComponents } from '$lib/utils/material';
 	import { onMount } from 'svelte';
 	import favicon from '$lib/assets/favicon.svg';
@@ -17,8 +18,9 @@
 	let drawerOpen = $state(false);
 
 	onMount(async () => {
-		// Initialize theme (client-side only)
+		// Initialize theme and glass mode (client-side only)
 		themeStore.init();
+		glassStore.init();
 
 		// Load Material Web components (must be client-side)
 		await loadMaterialComponents();

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SFIcon from './SFIcon.svelte';
+	import NavGlassSlider from './nav/NavGlassSlider.svelte';
 
 	interface Props {
 		isOpen: boolean;
@@ -76,6 +77,10 @@
 	</ul>
 
 	<div class="drawer__footer">
+		<div class="mobile-glass-control">
+			<span class="control-label">Glass Style</span>
+			<NavGlassSlider />
+		</div>
 		<a href="https://github.com/kiwikiwicq" class="drawer-link" target="_blank" rel="noopener noreferrer">
 			<SFIcon name="github" size={18} />
 			<span>GitHub</span>
@@ -196,5 +201,29 @@
 		padding: var(--space-3);
 		border-top: 1px solid var(--glass-border);
 		padding-bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0));
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.mobile-glass-control {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: 4px 6px 8px;
+	}
+
+	.control-label {
+		font-size: 11.5px;
+		font-weight: 500;
+		color: var(--md-sys-color-on-surface-variant);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.mobile-glass-control :global(.nav-island--glass-slider) {
+		display: flex !important;
+		width: 100%;
+		justify-content: space-between;
 	}
 </style>
