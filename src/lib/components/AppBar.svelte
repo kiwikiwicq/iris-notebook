@@ -44,7 +44,7 @@
 		<!-- Logo -->
 		<a href="/" class="app-bar__logo" aria-label="Iris Notebook – Home">
 			<div class="logo-badge">
-				<SFIcon name="code" size={15} color="#ffffff" />
+				<SFIcon name="code" size={15} color="var(--md-sys-color-on-surface)" />
 			</div>
 			<span class="logo-text">Iris Notebook</span>
 		</a>
