@@ -346,7 +346,13 @@
 	.article-main {
 		min-width: 0;
 		max-width: 100%;
-		overflow-x: hidden;
+	}
+
+	.article-sidebar {
+		position: sticky;
+		top: calc(var(--nav-height) + var(--space-6));
+		align-self: start;
+		z-index: 10;
 	}
 
 	/* Responsive */

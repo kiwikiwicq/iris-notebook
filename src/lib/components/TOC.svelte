@@ -130,18 +130,23 @@
 	.toc-desktop {
 		position: sticky;
 		top: calc(var(--nav-height) + var(--space-6));
-		max-height: calc(100vh - var(--nav-height) - var(--space-12));
+		max-height: calc(100vh - var(--nav-height) - var(--space-10));
 		overflow-y: auto;
 		padding: var(--space-5);
-		background: var(--md-sys-color-surface-container-low);
-		border-radius: var(--md-sys-shape-corner-extra-large);
-		border: 1px solid var(--md-sys-color-outline-variant);
+		background: var(--liquid-glass-bg);
+		backdrop-filter: var(--liquid-blur);
+		-webkit-backdrop-filter: var(--liquid-blur);
+		border-radius: 20px;
+		border: 1px solid var(--liquid-glass-border);
+		box-shadow: var(--liquid-glass-shadow);
 	}
 
 	.toc-title {
 		color: var(--md-sys-color-on-surface-variant);
+		font-size: 11px;
+		font-weight: 600;
 		text-transform: uppercase;
-		letter-spacing: 1px;
+		letter-spacing: 0.06em;
 		margin-bottom: var(--space-3);
 		max-width: none;
 	}
@@ -167,22 +172,20 @@
 		font-size: 13px;
 		line-height: 1.5;
 		color: var(--md-sys-color-on-surface-variant);
-		padding: 4px 8px;
-		border-radius: var(--md-sys-shape-corner-small);
-		transition:
-			background var(--motion-duration-short4) var(--motion-easing-standard),
-			color var(--motion-duration-short4) var(--motion-easing-standard);
+		padding: 5px 10px;
+		border-radius: 8px;
+		transition: background 0.2s ease, color 0.2s ease;
 	}
 
 	.toc-link:hover {
-		background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+		background: rgba(140, 140, 145, 0.12);
 		color: var(--md-sys-color-on-surface);
 	}
 
 	.toc-link.active {
-		color: var(--md-sys-color-primary);
+		color: var(--md-sys-color-on-surface);
 		font-weight: 600;
-		background: var(--md-sys-color-primary-container);
+		background: rgba(140, 140, 145, 0.18);
 	}
 
 	/* ── Mobile FAB ── */

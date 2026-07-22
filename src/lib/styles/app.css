@@ -21,7 +21,7 @@ html {
   -webkit-text-size-adjust: 100%;
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -33,7 +33,7 @@ body {
   min-height: 100dvh;
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   position: relative;
   transition:
     background-color var(--motion-duration-medium2) var(--motion-easing-standard),
