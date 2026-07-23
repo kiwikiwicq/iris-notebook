@@ -3,6 +3,7 @@
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import SFIcon from '$lib/components/SFIcon.svelte';
 	import { projects } from '$lib/data/projects';
+	import { languageStore } from '$lib/stores/language.svelte';
 
 	const languages = [...new Set(projects.map((p) => p.language))];
 	let selectedLang = $state('');
@@ -13,18 +14,18 @@
 </script>
 
 <svelte:head>
-	<title>Projects — Iris Notebook</title>
-	<meta name="description" content="Open source projects by Iris: Android tools, Linux utilities, SvelteKit sites, and developer libraries." />
+	<title>{languageStore.t.projectsPage.title} — Iris Notebook</title>
+	<meta name="description" content={languageStore.t.projectsPage.description} />
 </svelte:head>
 
 <main class="projects-page" id="main-content">
 	<div class="container">
-		<Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Projects' }]} />
+		<Breadcrumbs crumbs={[{ label: languageStore.t.nav.overview, href: '/' }, { label: languageStore.t.nav.projects }]} />
 
 		<header class="page-header">
-			<h1 class="display-small">Projects</h1>
+			<h1 class="display-small">{languageStore.t.projectsPage.title}</h1>
 			<p class="body-large page-subtitle">
-				Open source work, developer utilities, and experimental software tools.
+				{languageStore.t.projectsPage.description}
 			</p>
 		</header>
 
@@ -36,7 +37,7 @@
 				onclick={() => (selectedLang = '')}
 				aria-pressed={!selectedLang}
 			>
-				All Languages
+				{languageStore.t.articlesPage.allCategories}
 			</button>
 			{#each languages as lang}
 				<button

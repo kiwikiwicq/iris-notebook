@@ -5,6 +5,7 @@
 	import ArticleCard from '$lib/components/ArticleCard.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import SFIcon from '$lib/components/SFIcon.svelte';
+	import { languageStore } from '$lib/stores/language.svelte';
 
 	const allPosts = getPublishedPosts();
 
@@ -16,26 +17,26 @@
 </script>
 
 <svelte:head>
-	<title>Saved Articles — Iris Notebook</title>
-	<meta name="description" content="Your saved and bookmarked articles on Iris Notebook." />
+	<title>{languageStore.t.savedPage.title} — Iris Notebook</title>
+	<meta name="description" content={languageStore.t.savedPage.description} />
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
 <main class="saved-page" id="main-content">
 	<div class="container">
-		<Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Saved' }]} />
+		<Breadcrumbs crumbs={[{ label: languageStore.t.nav.overview, href: '/' }, { label: languageStore.t.nav.saved }]} />
 
 		<header class="page-header">
 			<div class="page-label">
 				<SFIcon name="bookmarked" size={15} />
-				<span class="label-medium">Reading List</span>
+				<span class="label-medium">{languageStore.t.nav.saved}</span>
 			</div>
-			<h1 class="display-small">Saved Articles</h1>
+			<h1 class="display-small">{languageStore.t.savedPage.title}</h1>
 			<p class="body-large page-subtitle">
 				{#if savedPosts.length > 0}
-					{savedPosts.length} article{savedPosts.length === 1 ? '' : 's'} saved to your reading list.
+					{savedPosts.length} {languageStore.t.categoriesPage.articlesCount} {languageStore.t.articleDetail.saved}.
 				{:else}
-					Your reading list is empty.
+					{languageStore.t.savedPage.noSaved}
 				{/if}
 			</p>
 		</header>

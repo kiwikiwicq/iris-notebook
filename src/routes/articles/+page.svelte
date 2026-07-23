@@ -6,6 +6,7 @@
 	import SFIcon from '$lib/components/SFIcon.svelte';
 	import { getPublishedPosts } from '$lib/data/posts';
 	import { categories } from '$lib/data/categories';
+	import { languageStore } from '$lib/stores/language.svelte';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
@@ -47,18 +48,18 @@
 </script>
 
 <svelte:head>
-	<title>Articles — Iris Notebook</title>
-	<meta name="description" content="Browse all articles on programming, Android, Linux, AI, and software architecture." />
+	<title>{languageStore.t.articlesPage.title} — Iris Notebook</title>
+	<meta name="description" content={languageStore.t.articlesPage.description} />
 </svelte:head>
 
 <main class="articles-page" id="main-content">
 	<div class="container">
-		<Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Articles' }]} />
+		<Breadcrumbs crumbs={[{ label: languageStore.t.nav.overview, href: '/' }, { label: languageStore.t.nav.articles }]} />
 
 		<header class="page-header">
-			<h1 class="display-small">Articles</h1>
+			<h1 class="display-small">{languageStore.t.articlesPage.title}</h1>
 			<p class="body-large page-subtitle">
-				{allPosts.length} technical engineering articles and runtime deep dives.
+				{allPosts.length} {languageStore.t.articlesPage.description}
 			</p>
 		</header>
 
@@ -70,7 +71,7 @@
 				onclick={() => selectCategory('')}
 				aria-pressed={!selectedCategory}
 			>
-				All
+				{languageStore.t.articlesPage.allCategories}
 			</button>
 			{#each categories as category}
 				<CategoryChip

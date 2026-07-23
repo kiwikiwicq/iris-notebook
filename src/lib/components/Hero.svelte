@@ -3,6 +3,7 @@
 	import { getPublishedPosts } from '$lib/data/posts';
 	import { categories } from '$lib/data/categories';
 	import { projects } from '$lib/data/projects';
+	import { languageStore } from '$lib/stores/language.svelte';
 	import SFIcon from '$lib/components/SFIcon.svelte';
 
 	let visible = $state(false);
@@ -19,26 +20,25 @@
 	<div class="hero-content container" class:visible>
 		<div class="hero-badge">
 			<span class="apple-dot"></span>
-			<span>Iris Engineering Notebook</span>
+			<span>{languageStore.t.hero.badge}</span>
 		</div>
 
 		<h1 class="hero-title">
-			<span class="hero-line">Notes on Swift, Kotlin,</span>
-			<span class="hero-line hero-highlight">Linux & Systems.</span>
+			<span class="hero-line">{languageStore.t.hero.title}</span>
 		</h1>
 
 		<p class="hero-subtitle">
-			Technical deep dives, system design, native mobile development, and software architecture written from real engineering practice.
+			{languageStore.t.hero.subtitle}
 		</p>
 
 		<div class="hero-actions">
 			<a href="/articles" class="btn-apple-primary">
-				<span>Read Articles</span>
+				<span>{languageStore.t.hero.browseArticles}</span>
 				<SFIcon name="arrowRight" size={16} />
 			</a>
-			<a href="/about" class="btn-apple-secondary">
-				<SFIcon name="person" size={16} />
-				<span>About Iris</span>
+			<a href="/projects" class="btn-apple-secondary">
+				<SFIcon name="projects" size={16} />
+				<span>{languageStore.t.hero.viewProjects}</span>
 			</a>
 		</div>
 
@@ -46,17 +46,17 @@
 		<div class="hero-stats card-glass">
 			<div class="stat-item">
 				<span class="stat-number">{articleCount}</span>
-				<span class="stat-label">Technical Articles</span>
+				<span class="stat-label">{languageStore.t.nav.articles}</span>
 			</div>
 			<div class="stat-divider"></div>
 			<div class="stat-item">
 				<span class="stat-number">{categoryCount}</span>
-				<span class="stat-label">Core Topics</span>
+				<span class="stat-label">{languageStore.t.nav.categories}</span>
 			</div>
 			<div class="stat-divider"></div>
 			<div class="stat-item">
 				<span class="stat-number">{projectCount}</span>
-				<span class="stat-label">Open Source Repos</span>
+				<span class="stat-label">{languageStore.t.nav.projects}</span>
 			</div>
 		</div>
 	</div>

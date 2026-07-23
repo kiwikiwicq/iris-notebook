@@ -4,6 +4,7 @@
 	import ArticleCard from '$lib/components/ArticleCard.svelte';
 	import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
 	import SFIcon from '$lib/components/SFIcon.svelte';
+	import { languageStore } from '$lib/stores/language.svelte';
 
 	const allPosts = getPublishedPosts();
 
@@ -19,22 +20,23 @@
 </script>
 
 <svelte:head>
-	<title>Categories — Iris Notebook</title>
-	<meta name="description" content="Browse Iris Notebook articles by category: Android, Linux, Programming, AI, and Notes." />
+	<title>{languageStore.t.categoriesPage.title} — Iris Notebook</title>
+	<meta name="description" content={languageStore.t.categoriesPage.description} />
 </svelte:head>
 
 <main class="categories-page" id="main-content">
 	<div class="container">
-		<Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'Categories' }]} />
+		<Breadcrumbs crumbs={[{ label: languageStore.t.nav.overview, href: '/' }, { label: languageStore.t.nav.categories }]} />
 
 		<header class="page-header">
-			<h1 class="display-small">Categories</h1>
-			<p class="body-large page-subtitle">Browse technical notes grouped by platform and domain focus.</p>
+			<h1 class="display-small">{languageStore.t.categoriesPage.title}</h1>
+			<p class="body-large page-subtitle">{languageStore.t.categoriesPage.description}</p>
 		</header>
 
 		<!-- Category cards -->
 		<div class="category-grid">
 			{#each categories as category, i}
+				{@const translatedCat = languageStore.translateCategory(category.slug, category.name, category.description)}
 				<button
 					class="cat-card liquid-glass"
 					class:active={activeCategory === category.slug}
@@ -49,10 +51,10 @@
 					<div class="cat-card-icon">
 						<SFIcon name={category.sfIcon ?? 'code'} size={20} />
 					</div>
-					<h2 class="cat-card-name title-large">{category.name}</h2>
-					<p class="cat-card-desc body-medium">{category.description}</p>
+					<h2 class="cat-card-name title-large">{translatedCat.name}</h2>
+					<p class="cat-card-desc body-medium">{translatedCat.description}</p>
 					<div class="cat-card-footer">
-						<span class="post-count label-large">{getPostCount(category.slug)} articles</span>
+						<span class="post-count label-large">{getPostCount(category.slug)} {languageStore.t.categoriesPage.articlesCount}</span>
 						<SFIcon name={activeCategory === category.slug ? 'arrowUp' : 'arrowRight'} size={14} />
 					</div>
 				</button>

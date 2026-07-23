@@ -31,6 +31,7 @@ const mdsvexOptions = {
 	extensions: ['.md', '.svx', '.mdx'],
 	highlight: {
 		highlighter: async (code, lang) => {
+
 			const safeLang = shikiHighlighter.getLoadedLanguages().includes(lang) ? lang : 'text';
 
 			const html = shikiHighlighter.codeToHtml(code, {
@@ -69,12 +70,52 @@ const config = {
 			mode: 'auto',
 			directives: {
 				'default-src': ['self'],
-				'script-src': ['self', 'unsafe-inline'],
-				'style-src': ['self', 'unsafe-inline', 'https://fonts.googleapis.com'],
-				'img-src': ['self', 'data:', 'https://*.youtube.com'],
-				'font-src': ['self', 'data:', 'https://fonts.gstatic.com'],
-				'frame-src': ['self', 'https://www.youtube.com'],
-				'connect-src': ['self']
+				'script-src': [
+					'self',
+					'unsafe-inline',
+					'https://*.google.com',
+					'https://*.googleapis.com',
+					'https://*.gstatic.com'
+				],
+				'script-src-elem': [
+					'self',
+					'unsafe-inline',
+					'https://*.google.com',
+					'https://*.googleapis.com',
+					'https://*.gstatic.com'
+				],
+				'style-src': [
+					'self',
+					'unsafe-inline',
+					'https://fonts.googleapis.com',
+					'https://*.googleapis.com',
+					'https://*.gstatic.com',
+					'https://www.gstatic.com'
+				],
+				'style-src-elem': [
+					'self',
+					'unsafe-inline',
+					'https://fonts.googleapis.com',
+					'https://*.googleapis.com',
+					'https://*.gstatic.com',
+					'https://www.gstatic.com'
+				],
+				'img-src': [
+					'self',
+					'data:',
+					'https://*.youtube.com',
+					'https://*.google.com',
+					'https://*.gstatic.com',
+					'https://*.googleapis.com'
+				],
+				'font-src': ['self', 'data:', 'https://fonts.gstatic.com', 'https://*.gstatic.com'],
+				'frame-src': ['self', 'https://*.youtube.com', 'https://*.google.com'],
+				'connect-src': [
+					'self',
+					'https://*.googleapis.com',
+					'https://*.google.com',
+					'https://api.mymemory.translated.net'
+				]
 			}
 		}
 	},

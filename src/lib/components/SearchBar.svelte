@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { searchStore } from '$lib/stores/search.svelte';
+	import { languageStore } from '$lib/stores/language.svelte';
 	import { getPublishedPosts } from '$lib/data/posts';
 	import { formatDate } from '$lib/utils/format-date';
 	import { onMount } from 'svelte';
@@ -93,7 +94,7 @@
 					id="search-input"
 					type="search"
 					class="search-input"
-					placeholder="Search articles, tags, categories…"
+					placeholder={languageStore.t.search.modalPlaceholder}
 					bind:value={searchStore.query}
 					autocomplete="off"
 					autocorrect="off"
@@ -119,7 +120,7 @@
 				{#if searchStore.query.length >= 2 && searchStore.results.length === 0}
 					<div class="search-empty">
 						<SFIcon name="search" size={36} />
-						<p>No results found for "<strong>{searchStore.query}</strong>"</p>
+						<p>{languageStore.t.search.noResults} for "<strong>{searchStore.query}</strong>"</p>
 					</div>
 				{:else if searchStore.results.length > 0}
 					<p class="results-label">{searchStore.results.length} results</p>

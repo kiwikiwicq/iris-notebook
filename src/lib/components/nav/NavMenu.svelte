@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { languageStore } from '$lib/stores/language.svelte';
 
-	const navLinks = [
-		{ href: '/', label: 'Overview' },
-		{ href: '/articles', label: 'Articles' },
-		{ href: '/categories', label: 'Categories' },
-		{ href: '/projects', label: 'Projects' },
-		{ href: '/about', label: 'About' }
-	];
+	let navLinks = $derived([
+		{ href: '/', label: languageStore.t.nav.overview },
+		{ href: '/articles', label: languageStore.t.nav.articles },
+		{ href: '/categories', label: languageStore.t.nav.categories },
+		{ href: '/projects', label: languageStore.t.nav.projects },
+		{ href: '/about', label: languageStore.t.nav.about }
+	]);
 
 	const pathname = $derived($page.url.pathname);
 

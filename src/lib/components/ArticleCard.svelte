@@ -4,6 +4,7 @@
 	import { getCategoryColor } from '$lib/data/categories';
 	import Tag from './Tag.svelte';
 	import { bookmarksStore } from '$lib/stores/bookmarks.svelte';
+	import { languageStore } from '$lib/stores/language.svelte';
 	import { onMount } from 'svelte';
 	import SFIcon from './SFIcon.svelte';
 
@@ -30,6 +31,9 @@
 
 	const bookmarked = $derived(bookmarksStore.isBookmarked(post.slug));
 
+	const translatedPost = $derived(languageStore.translatePost(post.slug, post.title, post.description));
+	const translatedCat = $derived(languageStore.translateCategory(post.category, post.category, ''));
+
 	function toggleBookmark(e: MouseEvent) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -38,7 +42,7 @@
 </script>
 
 <article class="article-card card" class:featured>
-	<a href={`/articles/${post.slug}`} class="card-link" aria-label={post.title}>
+	<a href={`/articles/${post.slug}`} class="card-link" aria-label={translatedPost.title}>
 		<!-- Thumbnail -->
 		<div class="card-image" style="background: {gradient}">
 			{#if post.image && !post.image.endsWith('.svg')}
@@ -46,14 +50,14 @@
 			{/if}
 			<div class="card-image-overlay">
 				<span class="category-badge" style="--cat-color: {categoryColor}">
-					{post.category}
+					{translatedCat.name}
 				</span>
 				<button
 					class="bookmark-btn"
 					class:bookmarked
 					onclick={toggleBookmark}
-					aria-label={bookmarked ? 'Remove bookmark' : 'Save article'}
-					title={bookmarked ? 'Remove bookmark' : 'Save article'}
+					aria-label={bookmarked ? languageStore.t.articleDetail.saved : languageStore.t.articleDetail.save}
+					title={bookmarked ? languageStore.t.articleDetail.saved : languageStore.t.articleDetail.save}
 				>
 					<SFIcon name={bookmarked ? 'bookmarked' : 'bookmark'} size={14} color="var(--md-sys-color-on-surface)" />
 				</button>
@@ -65,11 +69,11 @@
 			<div class="card-meta">
 				<time class="label-small" datetime={post.date}>{formatDate(post.date)}</time>
 				<span class="dot" aria-hidden="true">·</span>
-				<span class="label-small">{post.readingTime} min read</span>
+				<span class="label-small">{post.readingTime} {languageStore.t.articleDetail.minRead}</span>
 			</div>
 
-			<h3 class="card-title">{post.title}</h3>
-			<p class="card-desc">{post.description}</p>
+			<h3 class="card-title">{translatedPost.title}</h3>
+			<p class="card-desc">{translatedPost.description}</p>
 
 			<div class="card-tags">
 				{#each post.tags.slice(0, 3) as tag}

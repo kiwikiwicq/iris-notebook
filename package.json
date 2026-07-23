@@ -38,6 +38,7 @@
 		"@fontsource/roboto-mono": "^5.2.9",
 		"@material/web": "^2.4.1",
 		"@mdi/js": "^7.4.47",
+		"mermaid": "^11.16.0",
 		"puppeteer": "^25.3.0"
 	}
 }

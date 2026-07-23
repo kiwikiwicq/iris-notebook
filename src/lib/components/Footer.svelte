@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SFIcon from './SFIcon.svelte';
+	import { languageStore } from '$lib/stores/language.svelte';
 
 	const currentYear = new Date().getFullYear();
 </script>
@@ -16,45 +17,45 @@
 					<span class="brand-name">Iris Notebook</span>
 				</a>
 				<p class="brand-tagline">
-					Technical engineering notebook on Swift, Kotlin, Linux, and software design.
+					{languageStore.t.footer.tagline}
 				</p>
 			</div>
 
 			<!-- Navigation -->
 			<nav class="footer-nav" aria-label="Footer navigation">
 				<div class="nav-group">
-					<p class="nav-group-title">Explore</p>
+					<p class="nav-group-title">{languageStore.t.footer.quickLinks}</p>
 					<ul>
-						<li><a href="/">Overview</a></li>
-						<li><a href="/articles">Articles</a></li>
-						<li><a href="/categories">Categories</a></li>
-						<li><a href="/projects">Projects</a></li>
-						<li><a href="/about">About</a></li>
+						<li><a href="/">{languageStore.t.nav.overview}</a></li>
+						<li><a href="/articles">{languageStore.t.nav.articles}</a></li>
+						<li><a href="/categories">{languageStore.t.nav.categories}</a></li>
+						<li><a href="/projects">{languageStore.t.nav.projects}</a></li>
+						<li><a href="/about">{languageStore.t.nav.about}</a></li>
 					</ul>
 				</div>
 				<div class="nav-group">
-					<p class="nav-group-title">Topics</p>
+					<p class="nav-group-title">{languageStore.t.nav.categories}</p>
 					<ul>
-						<li><a href="/categories#android">Android &amp; Kotlin</a></li>
-						<li><a href="/categories#linux">Linux Systems</a></li>
-						<li><a href="/categories#programming">Swift &amp; Rust</a></li>
-						<li><a href="/categories#ai">AI Systems</a></li>
-						<li><a href="/categories#notes">Architecture Notes</a></li>
+						<li><a href="/categories#android">Android</a></li>
+						<li><a href="/categories#linux">Linux</a></li>
+						<li><a href="/categories#programming">Programming</a></li>
+						<li><a href="/categories#ai">AI</a></li>
+						<li><a href="/categories#notes">Notes</a></li>
 					</ul>
 				</div>
 				<div class="nav-group nav-group-connect">
-					<p class="nav-group-title">Connect</p>
+					<p class="nav-group-title">{languageStore.t.footer.connect}</p>
 					<ul>
 						<li>
 							<a href="https://github.com/kiwikiwicq" target="_blank" rel="noopener noreferrer">
 								<SFIcon name="github" size={14} />
-								<span>GitHub Profile</span>
+								<span>GitHub</span>
 							</a>
 						</li>
 						<li>
 							<a href="/rss.xml">
 								<SFIcon name="rss" size={14} />
-								<span>RSS Feed</span>
+								<span>{languageStore.t.footer.rss}</span>
 							</a>
 						</li>
 					</ul>
@@ -65,14 +66,14 @@
 		<hr class="divider" />
 
 		<div class="footer-bottom">
-			<p class="copyright">© {currentYear} Iris Notebook. Written by Iris. Crafted for Mac, iOS &amp; Web.</p>
+			<p class="copyright">© {currentYear} Iris Notebook. {languageStore.t.footer.copyright}</p>
 			<button
 				class="back-to-top liquid-glass"
 				onclick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-				aria-label="Back to top"
+				aria-label={languageStore.t.common.backToTop}
 			>
 				<SFIcon name="arrowUp" size={13} />
-				<span>Back to top</span>
+				<span>{languageStore.t.common.backToTop}</span>
 			</button>
 		</div>
 	</div>

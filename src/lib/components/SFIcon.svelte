@@ -33,7 +33,8 @@
 			| 'terminal'
 			| 'sparkles'
 			| 'mobile'
-			| 'command';
+			| 'command'
+			| 'globe';
 		size?: number;
 		color?: string;
 		class?: string;
@@ -212,6 +213,11 @@
 	{:else if name === 'command'}
 		<!-- SF Symbol: command -->
 		<path d="M18 9a3 3 0 1 0-3-3H9a3 3 0 1 0-3 3v6a3 3 0 1 0 3 3h6a3 3 0 1 0 3-3V9z" />
+	{:else if name === 'globe'}
+		<!-- SF Symbol: globe -->
+		<circle cx="12" cy="12" r="10" />
+		<line x1="2" y1="12" x2="22" y2="12" />
+		<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
 	{/if}
 </svg>
 

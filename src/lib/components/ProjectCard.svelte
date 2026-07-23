@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Project } from '$lib/data/projects';
+	import { languageStore } from '$lib/stores/language.svelte';
 	import SFIcon from './SFIcon.svelte';
 
 	interface Props {
@@ -8,6 +9,8 @@
 	}
 
 	let { project, index = 0 }: Props = $props();
+
+	const translatedDesc = $derived(languageStore.translateProject(project.name, project.description));
 
 	function formatStars(count: number): string {
 		if (count >= 1000) return `${(count / 1000).toFixed(1)}k`;
@@ -28,7 +31,7 @@
 			</div>
 
 			<h3 class="repo-name">{project.name}</h3>
-			<p class="repo-desc">{project.description}</p>
+			<p class="repo-desc">{translatedDesc}</p>
 
 			<div class="repo-topics">
 				{#each project.topics.slice(0, 4) as topic}

@@ -24,7 +24,7 @@
 	});
 </script>
 
-<header class="app-bar" class:scrolled aria-label="Site navigation">
+<header class="app-bar notranslate" translate="no" class:scrolled aria-label="Site navigation">
 	<div class="app-bar__container">
 		<NavBrand />
 		<NavMenu />

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Category } from '$lib/data/categories';
+	import { languageStore } from '$lib/stores/language.svelte';
 	import SFIcon from './SFIcon.svelte';
 
 	interface Props {
@@ -9,6 +10,8 @@
 	}
 
 	let { category, active = false, onclick }: Props = $props();
+
+	const translatedCat = $derived(languageStore.translateCategory(category.slug, category.name, category.description));
 </script>
 
 <button
@@ -18,7 +21,7 @@
 	aria-pressed={active}
 >
 	<SFIcon name="code" size={15} color="currentColor" />
-	<span class="chip-label">{category.name}</span>
+	<span class="chip-label">{translatedCat.name}</span>
 </button>
 
 <style>

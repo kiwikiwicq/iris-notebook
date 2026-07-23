@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { searchStore } from '$lib/stores/search.svelte';
+	import { languageStore } from '$lib/stores/language.svelte';
 	import ThemeToggle from '../ThemeToggle.svelte';
+	import LanguageToggle from '../LanguageToggle.svelte';
 	import SFIcon from '../SFIcon.svelte';
 
 	interface Props {
@@ -14,15 +16,17 @@
 	<button
 		class="search-trigger"
 		onclick={() => searchStore.open()}
-		aria-label="Search (⌘K)"
-		title="Search (⌘K)"
+		aria-label="{languageStore.t.search.placeholder} (⌘K)"
+		title="{languageStore.t.search.placeholder} (⌘K)"
 	>
 		<SFIcon name="search" size={15} />
-		<span class="search-placeholder">Search</span>
+		<span class="search-placeholder">{languageStore.t.search.placeholder}</span>
 		<span class="cmd-shortcut">⌘ K</span>
 	</button>
 
 	<div class="action-divider"></div>
+
+	<LanguageToggle />
 
 	<ThemeToggle />
 

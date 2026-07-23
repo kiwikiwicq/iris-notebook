@@ -10,6 +10,7 @@
 	import ArticleCard from '$lib/components/ArticleCard.svelte';
 	import SFIcon from '$lib/components/SFIcon.svelte';
 	import { getRelatedPosts } from '$lib/data/posts';
+	import { languageStore } from '$lib/stores/language.svelte';
 	import { onMount } from 'svelte';
 	import defaultAvatar from '$lib/assets/giphy.gif';
 	import { SITE_URL, SITE_OG_IMAGE } from '$lib/config';
@@ -31,8 +32,23 @@
 
 	const relatedPosts = $derived(getRelatedPosts(post.slug, post.category, 3));
 
+	const translatedPost = $derived(languageStore.translatePost(post.slug, post.title, post.description));
+	const translatedCat = $derived(languageStore.translateCategory(post.category, post.category, ''));
+
 	let readingProgress = $state(0);
 	let headings = $state<Heading[]>([]);
+
+	$effect(() => {
+		const lang = languageStore.currentLanguage;
+		const articleEl = document.getElementById('article-content');
+		if (!articleEl) return;
+
+		if (lang !== 'en') {
+			languageStore.translateArticleBody(articleEl);
+		} else {
+			languageStore.restoreArticleBody(articleEl);
+		}
+	});
 
 	onMount(() => {
 		// Extract headings from rendered article
@@ -134,16 +150,16 @@
 </script>
 
 <svelte:head>
-	<title>{post.title} – Iris Notebook</title>
-	<meta name="description" content={post.description} />
+	<title>{translatedPost.title} – Iris Notebook</title>
+	<meta name="description" content={translatedPost.description} />
 	<meta name="author" content={post.author} />
 
 	<!-- Canonical -->
 	<link rel="canonical" href="{SITE_URL}/articles/{post.slug}" />
 
 	<!-- Open Graph (article) -->
-	<meta property="og:title" content={post.title} />
-	<meta property="og:description" content={post.description} />
+	<meta property="og:title" content={translatedPost.title} />
+	<meta property="og:description" content={translatedPost.description} />
 	<meta property="og:type" content="article" />
 	<meta property="og:url" content="{SITE_URL}/articles/{post.slug}" />
 	<meta property="og:image" content={post.image ? (post.image.startsWith('http') ? post.image : `${SITE_URL}${post.image}`) : SITE_OG_IMAGE} />
@@ -161,8 +177,8 @@
 
 	<!-- Twitter / X Card -->
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content={post.title} />
-	<meta name="twitter:description" content={post.description} />
+	<meta name="twitter:title" content={translatedPost.title} />
+	<meta name="twitter:description" content={translatedPost.description} />
 	<meta name="twitter:image" content={post.image ? (post.image.startsWith('http') ? post.image : `${SITE_URL}${post.image}`) : SITE_OG_IMAGE} />
 </svelte:head>
 
@@ -183,9 +199,9 @@
 		<div class="article-breadcrumbs">
 			<Breadcrumbs
 				crumbs={[
-					{ label: 'Home', href: '/' },
-					{ label: 'Articles', href: '/articles' },
-					{ label: post.title }
+					{ label: languageStore.t.nav.overview, href: '/' },
+					{ label: languageStore.t.nav.articles, href: '/articles' },
+					{ label: translatedPost.title }
 				]}
 			/>
 		</div>
@@ -197,11 +213,11 @@
 				<header class="article-header">
 					<div class="article-category-tag">
 						<SFIcon name="categories" size={14} />
-						<span>{post.category}</span>
+						<span>{translatedCat.name}</span>
 					</div>
 
-					<h1 class="article-title">{post.title}</h1>
-					<p class="article-description">{post.description}</p>
+					<h1 class="article-title">{translatedPost.title}</h1>
+					<p class="article-description">{translatedPost.description}</p>
 
 					<div class="article-meta">
 						<div class="meta-author">
@@ -213,7 +229,7 @@
 						<span class="meta-sep">·</span>
 						<time datetime={post.date} class="body-medium">{formatDate(post.date)}</time>
 						<span class="meta-sep">·</span>
-						<span class="body-medium">{post.readingTime} min read</span>
+						<span class="body-medium">{post.readingTime} {languageStore.t.articleDetail.minRead}</span>
 					</div>
 
 					<div class="article-tags">
@@ -226,7 +242,30 @@
 				<!-- Featured Image -->
 				{#if post.image && !post.image.endsWith('.svg')}
 					<div class="article-featured-image">
-						<img src={post.image} alt={post.imageAlt ?? post.title} class="lightboxable" />
+						<img src={post.image} alt={post.imageAlt ?? translatedPost.title} class="lightboxable" />
+					</div>
+				{/if}
+
+				<!-- Translation Notice -->
+				{#if languageStore.currentLanguage !== 'en'}
+					<div class="translation-notice liquid-glass">
+						<SFIcon name="globe" size={15} />
+						<span>
+							{#if languageStore.isTranslating}
+								Translating article content...
+							{:else if languageStore.currentLanguage === 'zh'}
+								已为您自动将文章内容翻译为中文
+							{:else}
+								Contenido traducido al español
+							{/if}
+						</span>
+						<button
+							class="reset-lang-btn"
+							onclick={() => languageStore.setLanguage('en')}
+							title="View Original English"
+						>
+							Original (EN)
+						</button>
 					</div>
 				{/if}
 
@@ -238,7 +277,7 @@
 				<hr class="article-divider" />
 
 				<!-- Share -->
-				<ShareButtons title={post.title} slug={post.slug} />
+				<ShareButtons title={translatedPost.title} slug={post.slug} />
 
 				<!-- Author card -->
 				<AuthorCard />
@@ -247,21 +286,23 @@
 				{#if prevPost || nextPost}
 					<nav class="article-nav" aria-label="Article navigation">
 						{#if prevPost}
+							{@const transPrev = languageStore.translatePost(prevPost.slug, prevPost.title, prevPost.description)}
 							<a href={`/articles/${prevPost.slug}`} class="nav-article nav-prev">
 								<SFIcon name="arrowRight" size={16} class="icon-flip" />
 								<div>
-									<span class="nav-label label-small">Previous</span>
-									<span class="nav-title">{prevPost.title}</span>
+									<span class="nav-label label-small">{languageStore.t.articleDetail.prevArticle}</span>
+									<span class="nav-title">{transPrev.title}</span>
 								</div>
 							</a>
 						{:else}
 							<div></div>
 						{/if}
 						{#if nextPost}
+							{@const transNext = languageStore.translatePost(nextPost.slug, nextPost.title, nextPost.description)}
 							<a href={`/articles/${nextPost.slug}`} class="nav-article nav-next">
 								<div>
-									<span class="nav-label label-small">Next</span>
-									<span class="nav-title">{nextPost.title}</span>
+									<span class="nav-label label-small">{languageStore.t.articleDetail.nextArticle}</span>
+									<span class="nav-title">{transNext.title}</span>
 								</div>
 								<SFIcon name="arrowRight" size={16} />
 							</a>
@@ -272,7 +313,7 @@
 				<!-- Related Articles -->
 				{#if relatedPosts.length > 0}
 					<section class="related-posts" aria-label="Related articles">
-						<h2 class="title-large">More in {post.category}</h2>
+						<h2 class="title-large">{languageStore.t.home.featuredTitle}</h2>
 						<div class="related-grid">
 							{#each relatedPosts as p, i}
 								<ArticleCard post={p} index={i} />
@@ -290,7 +331,7 @@
 	</div>
 </main>
 
-<ImageLightbox />
+<ImageLightbox selector="#article-content" />
 
 <style>
 	.article-page {
@@ -519,6 +560,41 @@
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
+	}
+
+	/* Translation Notice */
+	.translation-notice {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 10px 16px;
+		margin-bottom: var(--space-6);
+		border-radius: var(--md-sys-shape-corner-medium, 12px);
+		background: rgba(103, 80, 164, 0.08);
+		border: 1px solid var(--liquid-glass-border);
+		color: var(--md-sys-color-on-surface);
+		font-size: 13px;
+		font-weight: 500;
+	}
+
+	.translation-notice span {
+		flex: 1;
+	}
+
+	.reset-lang-btn {
+		padding: 4px 10px;
+		border-radius: var(--md-sys-shape-corner-full);
+		border: 1px solid var(--glass-border);
+		background: rgba(140, 140, 145, 0.15);
+		color: var(--md-sys-color-on-surface);
+		font-size: 11.5px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background 0.15s ease;
+	}
+
+	.reset-lang-btn:hover {
+		background: rgba(140, 140, 145, 0.28);
 	}
 
 	/* Sidebar */

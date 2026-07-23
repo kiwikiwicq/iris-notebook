@@ -7,6 +7,7 @@
 	import { getPublishedPosts } from '$lib/data/posts';
 	import { categories } from '$lib/data/categories';
 	import { getFeaturedProjects } from '$lib/data/projects';
+	import { languageStore } from '$lib/stores/language.svelte';
 	import { goto } from '$app/navigation';
 
 	const posts = getPublishedPosts();
@@ -50,11 +51,11 @@
 		<div class="section-header">
 			<div class="section-label">
 				<SFIcon name="articles" size={15} />
-				<span class="label-medium">Engineering Notes</span>
+				<span class="label-medium">{languageStore.t.home.latestBadge}</span>
 			</div>
-			<h2 class="headline-medium" id="articles-heading">Recent Articles</h2>
+			<h2 class="headline-medium" id="articles-heading">{languageStore.t.home.latestTitle}</h2>
 			<p class="body-large section-desc">
-				Detailed analyses, runtime investigations, and architectural insights.
+				{languageStore.t.home.featuredDesc}
 			</p>
 		</div>
 
@@ -66,7 +67,7 @@
 
 		<div class="section-cta">
 			<a href="/articles" class="btn-outlined-primary">
-				<span>All Articles</span>
+				<span>{languageStore.t.home.viewAllArticles}</span>
 				<SFIcon name="arrowRight" size={15} />
 			</a>
 		</div>
@@ -79,28 +80,29 @@
 		<div class="section-header">
 			<div class="section-label">
 				<SFIcon name="categories" size={15} />
-				<span class="label-medium">Core Domains</span>
+				<span class="label-medium">{languageStore.t.home.categoriesBadge}</span>
 			</div>
-			<h2 class="headline-medium" id="categories-heading">Topics & Technologies</h2>
+			<h2 class="headline-medium" id="categories-heading">{languageStore.t.home.categoriesTitle}</h2>
 			<p class="body-large section-desc">
-				Browse technical notes grouped by platform and domain focus.
+				{languageStore.t.categoriesPage.description}
 			</p>
 		</div>
 
 		<div class="categories-grid">
 			{#each categories as category, i}
+				{@const translatedCat = languageStore.translateCategory(category.slug, category.name, category.description)}
 				<button
 					class="category-card liquid-glass"
 					onclick={() => handleCategoryClick(category.slug)}
 					style="--delay: {i * 60}ms;"
-					aria-label="Browse {category.name} articles"
+					aria-label="Browse {translatedCat.name} articles"
 				>
 					<div class="cat-icon-wrap">
 						<SFIcon name={category.sfIcon ?? 'code'} size={18} />
 					</div>
 					<div class="cat-info">
-						<h3 class="title-medium">{category.name}</h3>
-						<p class="body-small cat-desc">{category.description}</p>
+						<h3 class="title-medium">{translatedCat.name}</h3>
+						<p class="body-small cat-desc">{translatedCat.description}</p>
 					</div>
 					<SFIcon name="arrowRight" size={15} class="cat-arrow" />
 				</button>
@@ -115,11 +117,11 @@
 		<div class="section-header">
 			<div class="section-label">
 				<SFIcon name="projects" size={15} />
-				<span class="label-medium">Repositories</span>
+				<span class="label-medium">{languageStore.t.home.projectsBadge}</span>
 			</div>
-			<h2 class="headline-medium" id="projects-heading">Open Source Work</h2>
+			<h2 class="headline-medium" id="projects-heading">{languageStore.t.home.projectsTitle}</h2>
 			<p class="body-large section-desc">
-				Open source utilities, libraries, and experimental software tools.
+				{languageStore.t.projectsPage.description}
 			</p>
 		</div>
 
@@ -131,7 +133,7 @@
 
 		<div class="section-cta">
 			<a href="/projects" class="btn-outlined-primary">
-				<span>All Projects</span>
+				<span>{languageStore.t.home.viewAllProjects}</span>
 				<SFIcon name="arrowRight" size={15} />
 			</a>
 		</div>
@@ -145,21 +147,21 @@
 			<div class="cta-icon" aria-hidden="true">
 				<SFIcon name="rss" size={24} color="var(--md-sys-color-on-surface)" />
 			</div>
-			<h2 class="headline-small">Subscribe to Engineering Notes</h2>
+			<h2 class="headline-small">{languageStore.t.home.subscribeTitle}</h2>
 			<p class="body-large">
-				Get notified when new articles on Swift, Kotlin, Linux, and AI system design are published.
+				{languageStore.t.home.subscribeDesc}
 			</p>
 
 			{#if subscribeState === 'success'}
 				<div class="subscribe-success" role="status">
 					<SFIcon name="check" size={18} color="var(--apple-green)" />
-					<span>Subscribed. Thank you.</span>
+					<span>{languageStore.t.home.subscribeSuccess}</span>
 				</div>
 			{:else}
 				<form class="cta-form" onsubmit={handleSubscribe} novalidate>
 					<input
 						type="email"
-						placeholder="developer@example.com"
+						placeholder={languageStore.t.home.subscribePlaceholder}
 						class="cta-input"
 						class:input-error={subscribeState === 'error'}
 						aria-label="Email address for newsletter"
@@ -167,7 +169,7 @@
 						required
 					/>
 					<button class="cta-btn" type="submit">
-						<span>Subscribe</span>
+						<span>{languageStore.t.home.subscribeButton}</span>
 						<SFIcon name="arrowRight" size={15} color="var(--md-sys-color-surface)" />
 					</button>
 				</form>

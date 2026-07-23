@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SFIcon from './SFIcon.svelte';
 	import NavGlassSlider from './nav/NavGlassSlider.svelte';
+	import { languageStore, LANGUAGE_OPTIONS, type Language } from '$lib/stores/language.svelte';
 
 	interface Props {
 		isOpen: boolean;
@@ -9,13 +10,13 @@
 
 	let { isOpen, onClose }: Props = $props();
 
-	const navLinks: { href: string; label: string; icon: 'articles' | 'categories' | 'projects' | 'person' }[] = [
-		{ href: '/', label: 'Overview', icon: 'articles' },
-		{ href: '/articles', label: 'Articles', icon: 'articles' },
-		{ href: '/categories', label: 'Categories', icon: 'categories' },
-		{ href: '/projects', label: 'Projects', icon: 'projects' },
-		{ href: '/about', label: 'About', icon: 'person' }
-	];
+	let navLinks = $derived<{ href: string; label: string; icon: 'articles' | 'categories' | 'projects' | 'person' }[]>([
+		{ href: '/', label: languageStore.t.nav.overview, icon: 'articles' },
+		{ href: '/articles', label: languageStore.t.nav.articles, icon: 'articles' },
+		{ href: '/categories', label: languageStore.t.nav.categories, icon: 'categories' },
+		{ href: '/projects', label: languageStore.t.nav.projects, icon: 'projects' },
+		{ href: '/about', label: languageStore.t.nav.about, icon: 'person' }
+	]);
 
 	$effect(() => {
 		if (typeof document === 'undefined') return;
@@ -48,7 +49,8 @@
 
 <!-- Drawer -->
 <nav
-	class="drawer"
+	class="drawer notranslate"
+	translate="no"
 	class:open={isOpen}
 	aria-label="Mobile navigation"
 	aria-hidden={!isOpen}
@@ -77,8 +79,23 @@
 	</ul>
 
 	<div class="drawer__footer">
+		<div class="mobile-lang-control">
+			<span class="control-label">{languageStore.t.common.language}</span>
+			<div class="lang-pills">
+				{#each LANGUAGE_OPTIONS as opt}
+					<button
+						class="lang-pill"
+						class:active={languageStore.currentLanguage === opt.code}
+						onclick={() => languageStore.setLanguage(opt.code)}
+					>
+						<span>{opt.flag}</span>
+						<span>{opt.code.toUpperCase()}</span>
+					</button>
+				{/each}
+			</div>
+		</div>
 		<div class="mobile-glass-control">
-			<span class="control-label">Glass Style</span>
+			<span class="control-label">{languageStore.t.common.glassStyle}</span>
 			<NavGlassSlider />
 		</div>
 		<a href="https://github.com/kiwikiwicq" class="drawer-link" target="_blank" rel="noopener noreferrer">
@@ -206,11 +223,42 @@
 		gap: 8px;
 	}
 
+	.mobile-lang-control,
 	.mobile-glass-control {
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
-		padding: 4px 6px 8px;
+		padding: 4px 6px 4px;
+	}
+
+	.lang-pills {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.lang-pill {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		flex: 1;
+		justify-content: center;
+		padding: 6px 8px;
+		border-radius: var(--md-sys-shape-corner-full);
+		border: 1px solid var(--glass-border);
+		background: rgba(140, 140, 145, 0.1);
+		color: var(--md-sys-color-on-surface-variant);
+		font-size: 12px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+	}
+
+	.lang-pill.active {
+		background: var(--md-sys-color-on-surface);
+		color: var(--md-sys-color-background);
+		border-color: transparent;
+		font-weight: 600;
 	}
 
 	.control-label {

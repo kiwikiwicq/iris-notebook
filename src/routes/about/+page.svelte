@@ -5,6 +5,7 @@
 	import SFIcon from '$lib/components/SFIcon.svelte';
 	import { categories } from '$lib/data/categories';
 	import { getPublishedPosts } from '$lib/data/posts';
+	import { languageStore } from '$lib/stores/language.svelte';
 
 	const posts = getPublishedPosts();
 
@@ -44,13 +45,13 @@
 </script>
 
 <svelte:head>
-	<title>About — Iris Notebook</title>
-	<meta name="description" content="About Iris — software developer, tinkerer, and engineer. Notes on Swift, Kotlin, Linux, and AI system design." />
+	<title>{languageStore.t.aboutPage.title} — Iris Notebook</title>
+	<meta name="description" content={languageStore.t.aboutPage.subtitle} />
 </svelte:head>
 
 <main class="about-page" id="main-content">
 	<div class="container">
-		<Breadcrumbs crumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]} />
+		<Breadcrumbs crumbs={[{ label: languageStore.t.nav.overview, href: '/' }, { label: languageStore.t.nav.about }]} />
 
 		<!-- Hero section -->
 		<section class="about-hero" aria-labelledby="about-name">
@@ -62,15 +63,15 @@
 					<p class="hello label-medium">Hello, I'm</p>
 					<h1 class="display-small" id="about-name">Iris</h1>
 					<p class="about-tagline title-large">
-						Developer · Tinkerer · Lifelong Learner
+						{languageStore.t.aboutPage.subtitle}
 					</p>
 					<p class="about-bio body-large">
-						I'm a software engineer with a passion for high-performance software, elegant design systems, and deep engineering craft. I spend most of my time building mobile apps, tweaking Linux desktops, and exploring AI systems — writing notes from practice.
+						{languageStore.t.aboutPage.bioContent}
 					</p>
 					<div class="about-actions">
 						<a href="/articles" class="btn-filled">
 							<SFIcon name="articles" size={16} color="var(--md-sys-color-surface)" />
-							<span>Read Writing</span>
+							<span>{languageStore.t.hero.browseArticles}</span>
 						</a>
 						<a href="https://github.com/kiwikiwicq" class="btn-outlined" target="_blank" rel="noopener noreferrer">
 							<SFIcon name="github" size={16} />
@@ -85,37 +86,28 @@
 		<div class="quick-stats liquid-glass">
 			<div class="qstat">
 				<span class="qstat-num">{posts.length}+</span>
-				<span class="qstat-label">Articles written</span>
+				<span class="qstat-label">{languageStore.t.nav.articles}</span>
 			</div>
 			<div class="qstat-div"></div>
 			<div class="qstat">
 				<span class="qstat-num">{categories.length}</span>
-				<span class="qstat-label">Core topics</span>
-			</div>
-			<div class="qstat-div"></div>
-			<div class="qstat">
-				<span class="qstat-num">3+</span>
-				<span class="qstat-label">Years engineering</span>
-			</div>
-			<div class="qstat-div"></div>
-			<div class="qstat">
-				<span class="qstat-num">∞</span>
-				<span class="qstat-label">Curiosity</span>
+				<span class="qstat-label">{languageStore.t.nav.categories}</span>
 			</div>
 		</div>
 
 		<!-- What I write about -->
 		<section class="about-section" aria-labelledby="writing-heading">
-			<h2 class="headline-medium section-title" id="writing-heading">What I write about</h2>
+			<h2 class="headline-medium section-title" id="writing-heading">{languageStore.t.aboutPage.expertiseTitle}</h2>
 			<div class="topics-grid">
 				{#each categories as cat}
+					{@const translatedCat = languageStore.translateCategory(cat.slug, cat.name, cat.description)}
 					<a href="/articles?category={cat.slug}" class="topic-card liquid-glass">
 						<div class="topic-icon">
 							<SFIcon name="code" size={18} />
 						</div>
 						<div>
-							<h3 class="title-medium">{cat.name}</h3>
-							<p class="body-small topic-desc">{cat.description}</p>
+							<h3 class="title-medium">{translatedCat.name}</h3>
+							<p class="body-small topic-desc">{translatedCat.description}</p>
 						</div>
 					</a>
 				{/each}
